@@ -5,21 +5,21 @@
 - 시나리오 선정  및 프로젝트 Milestone 제출
   - e-commerce
   - milestone
-![마일스톤.png](..%2F..%2FDownloads%2F%EC%B0%A8%ED%8A%B8%20%EC%A0%95%EB%A6%AC%2F%EB%A7%88%EC%9D%BC%EC%8A%A4%ED%86%A4.png)
+    ![Image](https://github.com/haeraeniii/e-commerce/assets/102571539/20db908f-ff3a-40c0-bc8c-d3f5e75687a8)
 - 시나리오 요구사항 분석 자료 제출 (e.g. 시퀀스 다이어그램, 플로우 차트 등 )
   - 시퀀스 다이어그램
     - 상품을 주문한다.
-![상품을_주문한다.png](..%2F..%2FDownloads%2F%EC%B0%A8%ED%8A%B8%20%EC%A0%95%EB%A6%AC%2F%EC%83%81%ED%92%88%EC%9D%84_%EC%A3%BC%EB%AC%B8%ED%95%9C%EB%8B%A4.png)
+      ![Image](https://github.com/haeraeniii/e-commerce/assets/102571539/90b18881-8fe0-46bc-b194-05c0de059d49)
     - 인기상품을 조회한다.
-![인기상품을_조회한다.png](..%2F..%2FDownloads%2F%EC%B0%A8%ED%8A%B8%20%EC%A0%95%EB%A6%AC%2F%EC%9D%B8%EA%B8%B0%EC%83%81%ED%92%88%EC%9D%84_%EC%A1%B0%ED%9A%8C%ED%95%9C%EB%8B%A4.png)
+      ![Image](https://github.com/haeraeniii/e-commerce/assets/102571539/0081f2a1-6b0c-400c-ad55-55b4481da2eb)
 
 ### **`STEP 06`**
 
 - ERD 설계 자료 제출
-![ERD.png](..%2F..%2FDownloads%2F%EC%B0%A8%ED%8A%B8%20%EC%A0%95%EB%A6%AC%2FERD.png)
+![Image](https://github.com/haeraeniii/e-commerce/assets/102571539/38f8f8a6-a9e9-4f9f-8a1d-ca424b175006)
 
 - API 명세 및 Mock API 작성
-![api_명세서.png](..%2F..%2FDownloads%2F%EC%B0%A8%ED%8A%B8%20%EC%A0%95%EB%A6%AC%2Fapi_%EB%AA%85%EC%84%B8%EC%84%9C.png)
+  ![Image](https://github.com/haeraeniii/e-commerce/assets/102571539/1ecf2137-c57f-4c5c-bc1f-66c799262acd)
     - api 명세서 주소 https://field-fish-a81.notion.site/e-commerce-API-c7bc2a4e12904ba1b03bae08b820f437
 
 - Github Repo 제출 ( 기본 패키지 구조, 서버 Configuration 등 )
