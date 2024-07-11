@@ -1,8 +1,13 @@
 package hhplus.e_commerce.domain.product.controller;
 
-import hhplus.e_commerce.data.ApiOneResult;
-import hhplus.e_commerce.domain.product.controller.dto.ProductOptionResponseDto;
-import hhplus.e_commerce.domain.product.controller.dto.ProductResponseDto;
+import hhplus.e_commerce.base.data.ApiOneResult;
+import hhplus.e_commerce.domain.product.controller.dto.ProductDto;
+import hhplus.e_commerce.domain.product.controller.dto.ProductOptionDto;
+import hhplus.e_commerce.domain.product.controller.dto.mapper.ProductMapper;
+import hhplus.e_commerce.domain.product.controller.dto.mapper.ProductOptionMapper;
+import hhplus.e_commerce.domain.product.entity.Product;
+import hhplus.e_commerce.domain.product.entity.ProductOption;
+import hhplus.e_commerce.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
+    private final ProductService productService;
+
+    private final ProductMapper productMapper;
+
+    private final ProductOptionMapper productOptionMapper;
+
     /**
      * 1. 상품 리스트 조회
      * 2. 상품 조회
@@ -20,20 +31,33 @@ public class ProductController {
      */
 
     @GetMapping("/")
-    public ApiOneResult<List<ProductResponseDto>> showProducts () {
+    public ApiOneResult<List<ProductDto>> getProducts () {
+        List<Product> response = productService.getProductList();
 
-        return new ApiOneResult(new ArrayList<ProductResponseDto>());
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        response.forEach(product -> productDtoList.add(productMapper.toDto(product)));
+
+        return new ApiOneResult<>(true, "", productDtoList);
     }
 
-    @GetMapping("/productDetail/{id}")
-    public ApiOneResult<ProductOptionResponseDto> showProductDetail (@PathVariable String id) {
+    @GetMapping("/{id}")
+    public ApiOneResult<ProductDto> getProductDetail (@PathVariable long id) {
+        Product response = productService.getProductDetail(id);
 
-        return new ApiOneResult(new ProductOptionResponseDto(1, "블라우스", "pink", "M", 30000, 20));
+        return new ApiOneResult<>(productMapper.toDto(response));
     }
 
-    @GetMapping("/productTop5")
-    public ApiOneResult<List<ProductResponseDto>> showTop5 () {
+    @GetMapping("/Top5List")
+    public ApiOneResult<List<ProductOptionDto>> showTop5 () {
+        List<ProductOption> productTop5 = productService.getProductTop5();
 
-        return new ApiOneResult(new ArrayList<ProductResponseDto>());
+        List<ProductOptionDto> response = new ArrayList<>();
+
+        productTop5.forEach(productOption -> {
+            response.add(productOptionMapper.toDto(productOption));
+        });
+
+        return new ApiOneResult<>(true, "", response);
     }
 }

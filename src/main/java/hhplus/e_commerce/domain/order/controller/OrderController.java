@@ -1,47 +1,51 @@
 package hhplus.e_commerce.domain.order.controller;
 
-import hhplus.e_commerce.data.ApiOneResult;
-import hhplus.e_commerce.data.ApiResult;
-import hhplus.e_commerce.domain.order.controller.dto.OrderHistoryResponseDto;
-import hhplus.e_commerce.domain.order.controller.dto.OrderRequestDto;
+import hhplus.e_commerce.base.data.ApiOneResult;
+import hhplus.e_commerce.domain.order.controller.dto.OrderDto;
+import hhplus.e_commerce.domain.order.controller.dto.mapper.OrderMapper;
+import hhplus.e_commerce.domain.order.entity.Order;
+import hhplus.e_commerce.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
+
+    private final OrderService orderService;
+
+    private final OrderMapper mapper;
+
     /**
-     * 1. 주문 내역 보기
-     * 2. 상품 주문
-     * 3. 상품 주문 취소
-     * 4. 주문한 상품 환불
+     * 1. 상품 주문
+     * 2. 주문한 내역 보기
      */
 
+    //상품 주문
     @PostMapping("/")
-    public ApiResult order () {
+    public ApiOneResult<OrderDto> order (@RequestBody OrderDto orderDto) {
+        Order order = mapper.toOrder(orderDto);
 
-        return ApiResult.success("주문되었습니다.");
+        Order response = orderService.order(order);
+
+        return new ApiOneResult<>(true, "주문되었습니다.", mapper.toOrderDto(response));
     }
 
-    @PostMapping("/cancel")
-    public ApiResult orderCancel (@RequestBody OrderRequestDto orderRequestDto) {
+    // 주문 내역 보기
+    @GetMapping("/orderedList")
+    public ApiOneResult<List<OrderDto>> getOrderedList () {
 
-        return ApiResult.success("주문이 취소되었습니다.");
-    }
+        List<Order> response = orderService.getOrderList();
 
-    @PostMapping("refund")
-    public ApiResult refund (@RequestBody long id) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
 
-        return ApiResult.success("상품이 환불되었습니다.");
-    }
+        response.forEach(order -> orderDtoList.add(mapper.toOrderDto(order)));
 
-    @GetMapping("/orderedList/{customerId}")
-    public ApiOneResult<OrderHistoryResponseDto> showOrderedList (@PathVariable long customerId) {
-
-        return new ApiOneResult<>(new OrderHistoryResponseDto(0, "결제 완료", LocalDateTime.now(), new ArrayList<>()));
+        return new ApiOneResult<>(orderDtoList);
     }
 }
