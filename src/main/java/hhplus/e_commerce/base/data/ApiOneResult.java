@@ -1,4 +1,4 @@
-package hhplus.e_commerce.data;
+package hhplus.e_commerce.base.data;
 
 import lombok.Getter;
 import lombok.Setter;
