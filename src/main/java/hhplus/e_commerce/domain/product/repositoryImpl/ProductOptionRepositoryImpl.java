@@ -25,7 +25,7 @@ public class ProductOptionRepositoryImpl implements ProductOptionRepository {
 
     @Override
     public List<ProductOption> saveAll(List<ProductOption> productOptionList) {
-        return productOptionJpaRepository.saveAllAndFlush(productOptionList);
+        return productOptionJpaRepository.saveAll(productOptionList);
     }
 
     @Override

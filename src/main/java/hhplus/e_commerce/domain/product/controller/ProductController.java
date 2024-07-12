@@ -49,13 +49,13 @@ public class ProductController {
     }
 
     @GetMapping("/Top5List")
-    public ApiOneResult<List<ProductOptionDto>> showTop5 () {
-        List<ProductOption> productTop5 = productService.getProductTop5();
+    public ApiOneResult<List<ProductDto>> showTop5 () {
+        List<Product> productTop5 = productService.getProductTop5();
 
-        List<ProductOptionDto> response = new ArrayList<>();
+        List<ProductDto> response = new ArrayList<>();
 
-        productTop5.forEach(productOption -> {
-            response.add(productOptionMapper.toDto(productOption));
+        productTop5.forEach(product -> {
+            response.add(productMapper.toDto(product));
         });
 
         return new ApiOneResult<>(true, "", response);

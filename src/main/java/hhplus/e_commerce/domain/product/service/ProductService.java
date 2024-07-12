@@ -29,14 +29,11 @@ public class ProductService {
         return productRepository.getProduct(id);
     }
 
-    /**
-     * TODO: 상품 옵션이 아닌 상품으로 Top5를 뽑아보기
-     */
     // 인기 상품 Top5 조회
     // 1. 최근 3일 동안의 주문 내역 불러오기
     // 2. 주문 내역 내에서 주문한 상품들 불러오기
     // 3. 주문한 상품들 중복 갯수 체크 & 갯수 높은 순으로 나열
-    public List<ProductOption> getProductTop5 () {
+    public List<Product> getProductTop5 () {
         // 최근 3일간의 주문 내역 불러오기
         List<Order> order3days = orderRepository.getOrder3days();
 
@@ -52,29 +49,36 @@ public class ProductService {
             tempOptionList.add(orderItem.getProductOptionId());
         });
 
+        // 상품 아이디로 리스트 만들기
+        List<ProductOption> allById = productOptionRepository.findAllById(tempOptionList);
+        List<Long> productIdList = new ArrayList<>();
+        allById.forEach(productOption -> {
+            productIdList.add(productOption.getProduct().getId());
+        });
+
         // 리스트로 해쉬맵 만들기
         Map<Long, Integer> map = new HashMap<Long, Integer>();
 
-        for (long num : tempOptionList) {
+        for (long num : productIdList) {
             map.merge(num, 1, Integer::sum);
         }
 
         // 가장 많이 팔린 순으로 나열해서 5개 뽑기
-        List<Long> tempOptionList2 = new ArrayList<>();
+        List<Long> productList2 = new ArrayList<>();
 
         int index = 0;
 
         List<Map.Entry<Long, Integer>> entryList = new LinkedList<>(map.entrySet());
         entryList.sort((o1, o2) -> map.get(o2.getKey()) - map.get(o1.getKey()));
         for(Map.Entry<Long, Integer> entry : entryList){
-            System.out.println("key : " + entry.getKey() + ", value : " + entry.getValue());
+
             if(index < 5) {
-                tempOptionList2.add(entry.getKey());
+                productList2.add(entry.getKey());
             }
 
             index++;
         }
 
-        return productOptionRepository.findAllById(tempOptionList2);
+        return productRepository.findAllById(productList2);
     }
 }
