@@ -1,6 +1,8 @@
 package hhplus.e_commerce.domain.product.controller;
 
 import hhplus.e_commerce.base.data.ApiOneResult;
+import hhplus.e_commerce.base.data.ApiResult;
+import hhplus.e_commerce.domain.order.service.OrderService;
 import hhplus.e_commerce.domain.product.controller.dto.ProductDto;
 import hhplus.e_commerce.domain.product.controller.dto.ProductOptionDto;
 import hhplus.e_commerce.domain.product.controller.dto.mapper.ProductMapper;
@@ -11,6 +13,7 @@ import hhplus.e_commerce.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +25,20 @@ public class ProductController {
 
     private final ProductMapper productMapper;
 
-    private final ProductOptionMapper productOptionMapper;
-
     /**
      * 1. 상품 리스트 조회
      * 2. 상품 조회
      * 3. 인기 상품 Top5 조회 (최근 3일)
      */
+
+    @PostMapping("/register")
+    public ApiResult registerProduct (@RequestBody ProductDto productDto) {
+        Product response = productMapper.toEntity(productDto);
+
+        productService.registerProduct(response);
+
+        return new ApiResult(true, "상품이 등록되었습니다.");
+    }
 
     @GetMapping("/")
     public ApiOneResult<List<ProductDto>> getProducts () {
@@ -48,13 +58,13 @@ public class ProductController {
         return new ApiOneResult<>(productMapper.toDto(response));
     }
 
-    @GetMapping("/Top5List")
-    public ApiOneResult<List<ProductDto>> showTop5 () {
-        List<Product> productTop5 = productService.getProductTop5();
+    @GetMapping("/topProduct")
+    public ApiOneResult<List<ProductDto>> getTopProduct () {
+        List<Product> topProduct = productService.findTopProduct(LocalDateTime.now().minusDays(3), LocalDateTime.now());
 
         List<ProductDto> response = new ArrayList<>();
 
-        productTop5.forEach(product -> {
+        topProduct.forEach(product -> {
             response.add(productMapper.toDto(product));
         });
 

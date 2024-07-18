@@ -1,6 +1,7 @@
 package hhplus.e_commerce.domain.customer.controller;
 
-import hhplus.e_commerce.domain.customer.controller.dto.CustomerDto;
+import hhplus.e_commerce.domain.customer.controller.dto.CustomerRequestDto;
+import hhplus.e_commerce.domain.customer.controller.dto.CustomerResponseDto;
 import hhplus.e_commerce.domain.customer.controller.dto.mapper.CustomerMapper;
 import hhplus.e_commerce.base.data.ApiOneResult;
 import hhplus.e_commerce.base.data.ApiResult;
@@ -22,6 +23,13 @@ public class CustomerController {
      * 2. 고객 잔액 충전
      */
 
+    @PostMapping("/register")
+    public ApiOneResult<CustomerResponseDto> registerCustomer (@RequestBody String name) {
+        Customer customer = customerService.registerCustomer(name);
+
+        return new ApiOneResult<>(customerMapper.toDto(customer));
+    }
+
     @GetMapping("/checkBalance")
     public ApiOneResult<Long> checkBalance (@RequestBody long customerId) {
         Customer response = customerService.checkBalance(customerId);
@@ -30,11 +38,10 @@ public class CustomerController {
     }
 
     @PutMapping("/charge")
-    public ApiResult charge (@RequestBody CustomerDto customerDto) {
-        Customer entity = customerMapper.toEntity(customerDto);
+    public ApiOneResult<CustomerResponseDto> charge (@RequestBody CustomerRequestDto customerRequestDto) {
 
-        customerService.charge(entity);
+        Customer response = customerService.charge(customerRequestDto.toCustomerCommand());
 
-        return ApiResult.success("금액이 충전되었습니다.");
+        return new ApiOneResult<>(true, "충전되었습니다.", customerMapper.toDto(response));
     }
 }
