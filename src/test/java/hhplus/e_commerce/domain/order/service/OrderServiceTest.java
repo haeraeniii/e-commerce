@@ -1,9 +1,8 @@
 package hhplus.e_commerce.domain.order.service;
 
-import hhplus.e_commerce.base.exception.OrderException;
+import hhplus.e_commerce.base.exception.CustomException;
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderItem;
-import hhplus.e_commerce.domain.order.service.repository.OrderItemRepository;
 import hhplus.e_commerce.domain.order.service.repository.OrderRepository;
 import hhplus.e_commerce.domain.product.entity.ProductOption;
 import org.junit.jupiter.api.DisplayName;
@@ -103,21 +102,18 @@ class OrderServiceTest {
 
         ProductOption productOption1 = new ProductOption();
         productOption1.setId(100);
-        productOption1.setTitle("블라우스");
         productOption1.setColor("pink");
         productOption1.setSize("M");
         productOption1.setStock(10);
 
         ProductOption productOption2 = new ProductOption();
         productOption1.setId(200);
-        productOption1.setTitle("셔츠");
         productOption1.setColor("yellow");
         productOption1.setSize("L");
         productOption1.setStock(10);
 
         ProductOption productOption3 = new ProductOption();
         productOption1.setId(300);
-        productOption1.setTitle("팬츠");
         productOption1.setColor("black");
         productOption1.setSize("S");
         productOption1.setStock(10);
@@ -133,7 +129,7 @@ class OrderServiceTest {
                 if(orderItem.getProductOptionId() == option.getId()) {
                     try {
                         option.subtractStock(orderItem.getOrderQuantity());
-                    } catch (OrderException e) {
+                    } catch (CustomException e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -161,35 +157,5 @@ class OrderServiceTest {
         assertThat(orderService.getOrderList().size()).isEqualTo(orders.size());
     }
 
-    @Test
-    @DisplayName("최근 3일간 판매 내역 조회")
-    public void order3daysTest() {
-        //given
-        OrderItem orderItem1 = new OrderItem();
-        orderItem(orderItem1,  100, "블라우스", "pink", "M", 30000, 1);
 
-        OrderItem orderItem2 = new OrderItem();
-        orderItem(orderItem2,  200, "셔츠", "yellow", "L", 35000, 1);
-
-        OrderItem orderItem3 = new OrderItem();
-        orderItem(orderItem3,  300, "팬츠", "black", "S", 40000,1);
-
-        List<OrderItem> orderItemList = new ArrayList<>();
-        orderItemList.add(orderItem1);
-        orderItemList.add(orderItem2);
-        orderItemList.add(orderItem3);
-
-        Order order1 = new Order();
-        order(order1, orderItemList, LocalDateTime.now().minusDays(3));
-
-        List<Order> orders = new ArrayList<>();
-
-        orders.add(order1);
-
-        //when
-//        when(orderRepository.getOrder3days()).thenReturn(orders);
-//
-//        //then
-//        assertThat(orderService.getOrder3days().size()).isEqualTo(1);
-    }
 }
