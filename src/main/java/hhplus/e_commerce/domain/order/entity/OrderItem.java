@@ -22,6 +22,11 @@ public class OrderItem {
     private Order order;
 
     /**
+     * 상품 아이디
+     */
+    private long productId;
+
+    /**
      * 상품 옵션 아이디
      */
     private long productOptionId;

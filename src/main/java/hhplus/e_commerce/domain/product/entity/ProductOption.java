@@ -1,7 +1,8 @@
 package hhplus.e_commerce.domain.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hhplus.e_commerce.base.exception.OrderException;
+import hhplus.e_commerce.base.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,6 @@ public class ProductOption {
     @Id @GeneratedValue
     @Column(name = "product_option_id")
     private long id;
-
-    /**
-     * 상품명
-     */
-    private String title;
 
     /**
      * 상품 컬러
@@ -43,17 +39,17 @@ public class ProductOption {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     private Product product;
 
     /**
      * 재고 차감
      * @param stock
-     * @throws OrderException
+     * @throws CustomException
      */
-    public void subtractStock (long stock) throws OrderException {
+    public void subtractStock (long stock) throws CustomException {
         if(this.stock <= 0) {
-            throw new OrderException(OrderException.ExceptionType.STOCK_SHORTAGE,  "재고가 부족합니다.");
+            throw new CustomException(CustomException.ExceptionType.STOCK_SHORTAGE);
         }
         this.stock = this.stock - stock;
     }

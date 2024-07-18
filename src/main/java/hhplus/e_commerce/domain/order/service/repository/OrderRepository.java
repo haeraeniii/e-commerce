@@ -10,7 +10,7 @@ public interface OrderRepository {
 
     List<Order> saveAll(List<Order> order);
 
-    List<Order> getOrderList();
+    Order getOrder(long id);
 
-    List<Order> getOrder3days ();
+    List<Order> getOrderList();
 }

@@ -6,6 +6,7 @@ import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -16,6 +17,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product saveProduct(Product product) {
         return productJpaRepository.save(product);
+    }
+
+    @Override
+    public List<Product> saveAllProduct(List<Product> products) {
+        return productJpaRepository.saveAll(products);
     }
 
     @Override
@@ -31,5 +37,15 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findAllById(List<Long> productIds) {
         return productJpaRepository.findAllById(productIds);
+    }
+
+    @Override
+    public List<Product> findTopProduct(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return productJpaRepository.findTopProduct(startDateTime, endDateTime);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productJpaRepository.findAll();
     }
 }

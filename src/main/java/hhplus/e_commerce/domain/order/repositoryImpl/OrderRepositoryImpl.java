@@ -16,7 +16,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        return null;
+        return orderJpaRepository.save(order);
     }
 
     @Override
@@ -25,15 +25,12 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> getOrderList() {
-        return orderJpaRepository.findAll();
+    public Order getOrder(long id) {
+        return orderJpaRepository.getReferenceById(id);
     }
 
     @Override
-    public List<Order> getOrder3days() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime before3days = now.minusDays(4);
-
-        return orderJpaRepository.findAllByCreateAtIsAfter(before3days);
+    public List<Order> getOrderList() {
+        return orderJpaRepository.findAll();
     }
 }

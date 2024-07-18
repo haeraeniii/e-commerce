@@ -1,25 +1,32 @@
-package hhplus.e_commerce.domain.customer.entity;
+package hhplus.e_commerce.domain.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
 @Getter
-public class OrderSheet {
+public class OrderItemSheet {
     @Id
     @GeneratedValue
     private long id;
 
     /**
-     * 고객
+     * 주문서
      */
-    @OneToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_sheet_id")
+    @JsonIgnore
+    private OrderSheet orderSheet;
+
+    /**
+     * 상품 아이디
+     */
+    private long productId;
 
     /**
      * 상품 옵션
@@ -29,7 +36,7 @@ public class OrderSheet {
     /**
      * 상품명
      */
-    private String title;
+    private String productName;
 
     /**
      * 상품 컬러
@@ -47,7 +54,7 @@ public class OrderSheet {
     private long price;
 
     /**
-     * 상품 주문 시도 시간
+     * 주문 수량
      */
-    private LocalDateTime orderTrialTime;
+    private long orderQuantity;
 }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class OrderException extends Exception {
+public class CustomException extends Exception {
     public enum ExceptionType {
         /**
          * 재고 부족
@@ -20,7 +20,7 @@ public class OrderException extends Exception {
 
     private final ExceptionType exceptionType;
 
-    public OrderException (ExceptionType exceptionType, String message) {
+    public CustomException(ExceptionType exceptionType, String message) {
         super(message);
         this.exceptionType = exceptionType;
     }

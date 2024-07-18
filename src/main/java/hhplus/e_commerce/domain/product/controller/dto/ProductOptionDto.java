@@ -10,8 +10,6 @@ import lombok.Getter;
 public class ProductOptionDto {
     private long id;
 
-    private String title;
-
     private String color;
 
     private String size;

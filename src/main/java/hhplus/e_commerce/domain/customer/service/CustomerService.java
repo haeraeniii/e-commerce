@@ -1,9 +1,11 @@
 package hhplus.e_commerce.domain.customer.service;
 
 import hhplus.e_commerce.domain.customer.entity.Customer;
+import hhplus.e_commerce.domain.customer.service.dto.CustomerCommand;
 import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -11,17 +13,27 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    //고객 등록
+    @Transactional
+    public Customer registerCustomer (String name) {
+        Customer customer = new Customer();
+        customer.setName(name);
+
+        return customerRepository.save(customer);
+    }
+
     // 잔액 조회
     public Customer checkBalance(long customerId) {
         return customerRepository.getBalance(customerId);
     }
 
-    // 금액 충전
-    public void charge(Customer customer) {
-        Customer customer1 = customerRepository.getCustomer(customer.getId());
+    // 금액
+    @Transactional
+    public Customer charge(CustomerCommand.Create command) {
+        Customer customer = customerRepository.getCustomer(command.customerId());
 
-        customer1.chargeAmount(customer.getBalance());
+        customer.setBalance(customer.getBalance() + command.balance());
 
-        customerRepository.save(customer1);
+        return customer;
     }
 }
