@@ -14,34 +14,5 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
 public class CustomerController {
-    private final CustomerService customerService;
 
-    private final CustomerMapper customerMapper;
-
-    /**
-     * 1. 고객 잔액 조회
-     * 2. 고객 잔액 충전
-     */
-
-    @PostMapping("/register")
-    public ApiOneResult<CustomerResponseDto> registerCustomer (@RequestBody String name) {
-        Customer customer = customerService.registerCustomer(name);
-
-        return new ApiOneResult<>(customerMapper.toDto(customer));
-    }
-
-    @GetMapping("/checkBalance")
-    public ApiOneResult<Long> checkBalance (@RequestBody long customerId) {
-        Customer response = customerService.checkBalance(customerId);
-
-        return new ApiOneResult<>(response.getBalance());
-    }
-
-    @PutMapping("/charge")
-    public ApiOneResult<CustomerResponseDto> charge (@RequestBody CustomerRequestDto customerRequestDto) {
-
-        Customer response = customerService.charge(customerRequestDto.toCustomerCommand());
-
-        return new ApiOneResult<>(true, "충전되었습니다.", customerMapper.toDto(response));
-    }
 }
