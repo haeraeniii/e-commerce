@@ -14,8 +14,8 @@ public class CartRepositoryImpl implements CartRepository {
     private final CartJpaRepository cartJpaRepository;
 
     @Override
-    public List<Cart> getCartList() {
-        return cartJpaRepository.findAll();
+    public List<Cart> getAllByCustomerId(long customerId) {
+        return cartJpaRepository.findAllByCustomerId(customerId);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CartRepositoryImpl implements CartRepository {
         cartJpaRepository.deleteById(id);
     }
 
-    public void deleteAll(List<Cart> carts) {
-        cartJpaRepository.deleteAll(carts);
+    public void deleteAll(long customerId) {
+        cartJpaRepository.deleteAllByCustomerId(customerId);
     }
 }

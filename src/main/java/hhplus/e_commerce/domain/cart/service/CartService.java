@@ -1,24 +1,37 @@
 package hhplus.e_commerce.domain.cart.service;
 
 import hhplus.e_commerce.domain.cart.entity.Cart;
+import hhplus.e_commerce.domain.cart.service.dto.CartCommand;
 import hhplus.e_commerce.domain.cart.service.repository.CartRepository;
+import hhplus.e_commerce.domain.product.entity.ProductOption;
+import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
+    private final ProductOptionRepository productOptionRepository;
 
     public List<Cart> getCartList(long customerId) {
-
-        return getSortedList(customerId);
+        return cartRepository.getAllByCustomerId(customerId);
     }
 
-    public void addCart(Cart cart) {
+    public void addCart(CartCommand.Create command) {
+        ProductOption productOption = productOptionRepository.getById(command.id());
+
+        Cart cart = new Cart();
+        cart.setCustomerId(command.customerId());
+        cart.setProductOptionId(productOption.getId());
+        cart.setProductName(productOption.getProduct().getTitle());
+        cart.setColor(productOption.getColor());
+        cart.setSize(productOption.getSize());
+        cart.setPrice(productOption.getProduct().getPrice());
+        cart.setOrderQuantity(command.orderQuantity());
+
         cartRepository.addCart(cart);
     }
 
@@ -27,20 +40,6 @@ public class CartService {
     }
 
     public void deleteAll(long customerId) {
-        List<Cart> sortedList = getSortedList(customerId);
-
-        cartRepository.deleteAll(sortedList);
-    }
-
-    //특정 고객에 대한 장바구니 리스트
-    List<Cart> getSortedList (long customerId) {
-        List<Cart> cartList = cartRepository.getCartList();
-
-        List<Cart> sortedList = new ArrayList<>();
-        cartList.forEach(cart -> {
-            if(cart.getCustomerId() == customerId) sortedList.add(cart);
-        });
-
-        return sortedList;
+        cartRepository.deleteAll(customerId);
     }
 }

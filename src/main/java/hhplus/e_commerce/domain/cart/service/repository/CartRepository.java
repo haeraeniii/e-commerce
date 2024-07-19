@@ -5,7 +5,7 @@ import hhplus.e_commerce.domain.cart.entity.Cart;
 import java.util.List;
 
 public interface CartRepository {
-    List<Cart> getCartList();
+    List<Cart> getAllByCustomerId(long customerId);
 
     Cart getCart(long id);
 
@@ -13,5 +13,5 @@ public interface CartRepository {
 
     void deleteCart(long id);
 
-    void deleteAll(List<Cart> carts);
+    void deleteAll(long customerId);
 }

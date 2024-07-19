@@ -2,8 +2,8 @@ package hhplus.e_commerce.domain.cart.controller;
 
 import hhplus.e_commerce.base.data.ApiOneResult;
 import hhplus.e_commerce.base.data.ApiResult;
-import hhplus.e_commerce.domain.cart.controller.dto.CartDto;
 import hhplus.e_commerce.domain.cart.controller.dto.CartRequestDto;
+import hhplus.e_commerce.domain.cart.controller.dto.CartResponseDto;
 import hhplus.e_commerce.domain.cart.controller.dto.mapper.CartMapper;
 import hhplus.e_commerce.domain.cart.entity.Cart;
 import hhplus.e_commerce.domain.cart.service.CartService;
@@ -29,11 +29,11 @@ public class CartController {
      */
 
     @GetMapping("/{customerId}")
-    public ApiOneResult<List<CartDto>> cart (@PathVariable long customerId) {
+    public ApiOneResult<List<CartResponseDto>> cart (@PathVariable long customerId) {
 
         List<Cart> cartList = cartService.getCartList(customerId);
 
-        List<CartDto> sortedList = new ArrayList<>();
+        List<CartResponseDto> sortedList = new ArrayList<>();
 
         cartList.forEach(cart -> sortedList.add(cartMapper.toDto(cart)));
 
@@ -41,11 +41,9 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ApiResult addCart (@RequestBody CartDto cartDto) {
+    public ApiResult addCart (@RequestBody CartRequestDto cartRequestDto) {
 
-        Cart entity = cartMapper.toEntity(cartDto);
-
-        cartService.addCart(entity);
+        cartService.addCart(cartRequestDto.toCartCreateCommand());
 
         return ApiResult.success("장바구니에 추가되었습니다.");
     }

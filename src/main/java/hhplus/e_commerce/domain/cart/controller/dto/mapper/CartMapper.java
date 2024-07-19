@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.cart.controller.dto.mapper;
 
-import hhplus.e_commerce.domain.cart.controller.dto.CartDto;
+import hhplus.e_commerce.domain.cart.controller.dto.CartResponseDto;
 import hhplus.e_commerce.domain.cart.entity.Cart;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,7 +11,7 @@ public interface CartMapper {
     CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
     @Mapping(target = "id", ignore = true)
-    Cart toEntity(CartDto cartDto);
+    Cart toEntity(CartResponseDto cartResponseDto);
 
-    CartDto toDto(Cart cart);
+    CartResponseDto toDto(Cart cart);
 }
