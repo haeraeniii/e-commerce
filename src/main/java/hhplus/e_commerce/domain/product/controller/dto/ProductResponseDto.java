@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
-public class ProductDto {
+public class ProductResponseDto {
     private long id;
 
     private String title;

@@ -2,6 +2,7 @@ package hhplus.e_commerce.domain.product.service;
 
 import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.entity.ProductOption;
+import hhplus.e_commerce.domain.product.service.dto.ProductCommand;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
 import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +18,28 @@ public class ProductService {
     private final ProductOptionRepository productOptionRepository;
 
     //상품 등록
-    public void registerProduct (Product product) {
+    public Product registerProduct (ProductCommand.Create command) {
+        Product product = new Product();
+        product.setTitle(command.title());
+        product.setPrice(command.price());
+
+
         Product product1 = productRepository.saveProduct(product);
-        List<ProductOption> productOptionList = product.getProductOptionList().stream().map(option -> {
+
+        List<ProductOption> productOptionList = command.newProductOptionList().stream().map(option -> {
             ProductOption option1 = new ProductOption();
             option1.setProduct(product1);
-            option1.setColor(option.getColor());
-            option1.setSize(option.getSize());
-            option1.setStock(option.getStock());
+            option1.setColor(option.color());
+            option1.setSize(option.size());
+            option1.setStock(option.stock());
 
             return option1;
         }).toList();
 
-        productOptionRepository.saveAll(productOptionList);
+        List<ProductOption> productOptionList1 = productOptionRepository.saveAll(productOptionList);
+        product1.setProductOptionList(productOptionList1);
+
+        return product1;
     }
 
     // 상품 목록 조회

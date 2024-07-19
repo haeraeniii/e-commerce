@@ -6,10 +6,12 @@ import hhplus.e_commerce.base.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Setter
 @Getter
+@ToString
 public class ProductOption {
 
     /**
@@ -51,7 +53,7 @@ public class ProductOption {
         if(this.stock <= 0) {
             throw new CustomException(CustomException.ExceptionType.STOCK_SHORTAGE);
         }
-        this.stock = this.stock - stock;
+        this.stock -= stock;
     }
 
     /**
@@ -59,6 +61,6 @@ public class ProductOption {
      * @param stock
      */
     public void addStock (long stock) {
-        this.stock = this.stock + stock;
+        this.stock += stock;
     }
 }

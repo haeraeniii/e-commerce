@@ -34,7 +34,7 @@ class OrderRepositoryImplTest {
 
     private void order(Order order, List<OrderItem> orderItemList, LocalDateTime time) {
         order.setOrderItemList(orderItemList);
-        order.setCreateAt(time);
+        order.setCreatedAt(time);
     }
 
     @Test
@@ -89,9 +89,9 @@ class OrderRepositoryImplTest {
         System.out.println(orders1.size());
 
         //when
-        List<Order> order3days = orderRepositoryImpl.getOrder3days();
+
 
         //then
-        System.out.println(order3days);
+
     }
 }

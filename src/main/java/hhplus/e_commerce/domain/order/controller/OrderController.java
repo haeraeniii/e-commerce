@@ -10,8 +10,10 @@ import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderSheet;
 import hhplus.e_commerce.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,11 @@ public class OrderController {
      * 2. 상품 주문
      * 3. 주문한 내역 보기
      */
+
+    @PostMapping("/test")
+    public String test(@RequestHeader(name = "USER_ID") long customerId) {
+        return "USER_ID : " + customerId;
+    }
 
     //주문서 생성
     @PostMapping("/createOrderSheet")

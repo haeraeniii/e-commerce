@@ -2,7 +2,8 @@ package hhplus.e_commerce.domain.product.controller;
 
 import hhplus.e_commerce.base.data.ApiOneResult;
 import hhplus.e_commerce.base.data.ApiResult;
-import hhplus.e_commerce.domain.product.controller.dto.ProductDto;
+import hhplus.e_commerce.domain.product.controller.dto.ProductRequestDto;
+import hhplus.e_commerce.domain.product.controller.dto.ProductResponseDto;
 import hhplus.e_commerce.domain.product.controller.dto.mapper.ProductMapper;
 import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.service.ProductService;
@@ -28,37 +29,37 @@ public class ProductController {
      */
 
     @PostMapping("/register")
-    public ApiResult registerProduct (@RequestBody ProductDto productDto) {
-        Product response = productMapper.toEntity(productDto);
+    public ApiOneResult<ProductResponseDto> registerProduct (@RequestBody ProductRequestDto productResponseDto) {
 
-        productService.registerProduct(response);
 
-        return new ApiResult(true, "상품이 등록되었습니다.");
+        Product product = productService.registerProduct(productResponseDto.toProductCreateCommand());
+
+        return new ApiOneResult<>(true, "상품이 등록되었습니다.", productMapper.toDto(product));
     }
 
     @GetMapping("/")
-    public ApiOneResult<List<ProductDto>> getProducts () {
+    public ApiOneResult<List<ProductResponseDto>> getProducts () {
         List<Product> response = productService.getProductList();
 
-        List<ProductDto> productDtoList = new ArrayList<>();
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
-        response.forEach(product -> productDtoList.add(productMapper.toDto(product)));
+        response.forEach(product -> productResponseDtoList.add(productMapper.toDto(product)));
 
-        return new ApiOneResult<>(true, "", productDtoList);
+        return new ApiOneResult<>(true, "", productResponseDtoList);
     }
 
     @GetMapping("/{id}")
-    public ApiOneResult<ProductDto> getProductDetail (@PathVariable long id) {
+    public ApiOneResult<ProductResponseDto> getProductDetail (@PathVariable long id) {
         Product response = productService.getProductDetail(id);
 
         return new ApiOneResult<>(productMapper.toDto(response));
     }
 
     @GetMapping("/topProduct")
-    public ApiOneResult<List<ProductDto>> getTopProduct () {
+    public ApiOneResult<List<ProductResponseDto>> getTopProduct () {
         List<Product> topProduct = productService.findTopProduct(LocalDateTime.now().minusDays(3), LocalDateTime.now());
 
-        List<ProductDto> response = new ArrayList<>();
+        List<ProductResponseDto> response = new ArrayList<>();
 
         topProduct.forEach(product -> {
             response.add(productMapper.toDto(product));

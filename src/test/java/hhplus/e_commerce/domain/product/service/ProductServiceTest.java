@@ -38,7 +38,7 @@ class ProductServiceTest {
 
     private void order(Order order, List<OrderItem> orderItemList, LocalDateTime time) {
         order.setOrderItemList(orderItemList);
-        order.setCreateAt(time);
+        order.setCreatedAt(time);
     }
 
     private void dummyData(List<Order> orders) {

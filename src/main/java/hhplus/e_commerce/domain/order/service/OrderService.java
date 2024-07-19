@@ -17,10 +17,12 @@ import hhplus.e_commerce.domain.product.entity.ProductOption;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
 import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,24 +85,20 @@ public class OrderService {
     @Transactional
     public Order order(OrderCommand.Create command) throws CustomException {
         // 1. 상품 옵션 리스트 가져오기
-        List<ProductOption> productOptionList =
-            productOptionRepository.findAllById(
-              command.newOrderItemList().stream()
-                .map(it -> it.productOptionId()).toList()
-            );
+        List<ProductOption> productOptionList = new ArrayList<>();
+
 
         // 2. 재고 차감
-        productOptionList.stream().forEach(it ->
-            command.newOrderItemList().forEach(item -> {
-                if(item.productOptionId() == it.getId()) {
-                    try {
-                        it.subtractStock(item.quantity());
-                    } catch (CustomException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            })
-        );
+        command.newOrderItemList().forEach(item -> {
+            try {
+                ProductOption option = productOptionRepository.getById(item.productOptionId());
+                option.subtractStock(item.quantity());
+                productOptionList.add(option);
+
+            } catch (CustomException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         // 3. 재고 있으면 토탈 금액 구하기
         Long totalOrderAmount = command.newOrderItemList()

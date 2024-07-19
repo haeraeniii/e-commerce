@@ -14,7 +14,7 @@ public class ProductOptionRepositoryImpl implements ProductOptionRepository {
     private final ProductOptionJpaRepository productOptionJpaRepository;
 
     @Override
-    public ProductOption getProductOption(long id) {
+    public ProductOption getById(long id) {
         return productOptionJpaRepository.getReferenceById(id);
     }
 

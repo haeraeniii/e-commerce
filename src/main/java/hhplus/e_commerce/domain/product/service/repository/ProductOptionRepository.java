@@ -12,7 +12,7 @@ public interface ProductOptionRepository {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
-    ProductOption getProductOption(long id);
+    ProductOption getById(long id);
 
     ProductOption save(ProductOption productOption);
 
