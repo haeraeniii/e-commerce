@@ -14,7 +14,12 @@ public class ApiAdvice {
         String message = "실패했습니다.";
 
         switch (e.getExceptionType()) {
-
+            case NO_USER_INFO :
+                message = "유저 정보가 없습니다.";
+                break;
+            case HAS_SAME_USER :
+                message = "이미 가입된 회원입니다.";
+                break;
             case STOCK_SHORTAGE :
                 message = "재고가 부족합니다.";
                 break;

@@ -8,6 +8,16 @@ import lombok.RequiredArgsConstructor;
 public class CustomException extends Exception {
     public enum ExceptionType {
         /**
+         * 유저 정보 없음
+         */
+        NO_USER_INFO,
+
+        /**
+         * 동일한 유저 정보 존재
+         */
+        HAS_SAME_USER,
+
+        /**
          * 재고 부족
          */
         STOCK_SHORTAGE,

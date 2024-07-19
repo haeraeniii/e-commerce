@@ -1,5 +1,6 @@
 package hhplus.e_commerce.domain.customer.service;
 
+import hhplus.e_commerce.base.exception.CustomException;
 import hhplus.e_commerce.domain.customer.entity.Customer;
 import hhplus.e_commerce.domain.customer.service.dto.CustomerCommand;
 import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
@@ -15,7 +16,13 @@ public class CustomerService {
 
     //고객 등록
     @Transactional
-    public Customer registerCustomer (String name) {
+    public Customer registerCustomer (String name) throws CustomException {
+        Customer findCustomer = customerRepository.findByName(name);
+
+        if(findCustomer != null) {
+           throw new CustomException(CustomException.ExceptionType.HAS_SAME_USER);
+        }
+
         Customer customer = new Customer();
         customer.setName(name);
 
