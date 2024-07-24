@@ -20,23 +20,20 @@ class CustomerServiceTest {
     @DisplayName("금액 충전 테스트")
     public void chargeTest() {
         //given
-        Customer customer = new Customer();
-        customer.setId(0);
-        customer.setBalance(3000);
+        Customer customer = new Customer("정혜련", 0);
 
         //when
+        customer.charge(30000);
 
         //then
-        assertThat(customer.getBalance()).isEqualTo(6000);
+        assertThat(customer.getBalance()).isEqualTo(30000);
     }
 
     @Test
     @DisplayName("잔액 확인 테스트")
     public void checkBalanceTest() {
         //given
-        Customer customer = new Customer();
-        customer.setId(0);
-        customer.setBalance(3000);
+        Customer customer = new Customer("정혜련", 3000);
 
         //when
         when(customerService.checkBalance(0)).thenReturn(customer);

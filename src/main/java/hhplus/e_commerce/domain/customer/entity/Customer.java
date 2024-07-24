@@ -1,13 +1,13 @@
 package hhplus.e_commerce.domain.customer.entity;
 
-import hhplus.e_commerce.base.exception.CustomException;
+import hhplus.e_commerce.exception.CustomException;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue
@@ -24,10 +24,21 @@ public class Customer {
      */
     private long balance;
 
+    @Builder
+    public Customer(String name, long balance) {
+        this.name = name;
+        this.balance = balance;
+    }
+
+    /**
+     * 금액 충전
+     */
+    public void charge(long amount) {
+        this.balance += amount;
+    }
+
     /**
      * 잔액 사용
-     * @param balance
-     * @throws CustomException
      */
     public void useBalance(long balance) throws CustomException {
         if(this.balance < balance) {

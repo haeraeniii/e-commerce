@@ -1,23 +1,19 @@
 package hhplus.e_commerce.domain.order.service;
 
-import hhplus.e_commerce.base.exception.CustomException;
-import hhplus.e_commerce.domain.customer.entity.Customer;
-import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
+import hhplus.e_commerce.domain.product.service.command.OrderProductCommand;
+import hhplus.e_commerce.exception.CustomException;
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderItem;
 import hhplus.e_commerce.domain.order.entity.OrderItemSheet;
 import hhplus.e_commerce.domain.order.entity.OrderSheet;
-import hhplus.e_commerce.domain.order.service.dto.OrderCommand;
+import hhplus.e_commerce.domain.order.service.command.OrderCommand;
 import hhplus.e_commerce.domain.order.service.repository.OrderItemRepository;
 import hhplus.e_commerce.domain.order.service.repository.OrderItemSheetRepository;
 import hhplus.e_commerce.domain.order.service.repository.OrderRepository;
 import hhplus.e_commerce.domain.order.service.repository.OrderSheetRepository;
-import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.entity.ProductOption;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
-import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Synchronized;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +28,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderSheetRepository orderSheetRepository;
     private final OrderItemSheetRepository orderItemSheetRepository;
-    private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
-    private final CustomerRepository customerRepository;
 
     /**
      * 주문서 생성
@@ -44,7 +38,7 @@ public class OrderService {
         List<ProductOption> productOptionList =
             productOptionRepository.findAllById(
                     command.newOrderItemList().stream()
-                            .map(it -> it.productOptionId()).toList()
+                            .map(OrderCommand.Create.NewOrderItem::productOptionId).toList()
             );
 
         // 2. 주문서 생성
@@ -61,7 +55,7 @@ public class OrderService {
             orderItemSheet.setProductName(it.getProduct().getTitle());
             orderItemSheet.setColor(it.getColor());
             orderItemSheet.setSize(it.getSize());
-            orderItemSheet.setPrice(it.getProduct().getPrice());
+            orderItemSheet.setPrice(it.getPrice());
 
             command.newOrderItemList().forEach(item -> {
                 if(item.productOptionId() == it.getId()) {
@@ -83,63 +77,32 @@ public class OrderService {
      * 주문하기
      */
     @Transactional
-    public Order order(OrderCommand.Create command) throws CustomException {
-        // 1. 상품 옵션 리스트 가져오기
-        List<ProductOption> productOptionList = new ArrayList<>();
+    public Order order(long customerId, List<OrderProductCommand.Create.OrderProductOption> orderProductOptionList) throws CustomException {
 
-
-        // 2. 재고 차감
-        command.newOrderItemList().forEach(item -> {
-            try {
-                ProductOption option = productOptionRepository.getById(item.productOptionId());
-                option.subtractStock(item.quantity());
-                productOptionList.add(option);
-
-            } catch (CustomException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        // 3. 재고 있으면 토탈 금액 구하기
-        Long totalOrderAmount = command.newOrderItemList()
-            .stream().map(it -> {
-                Product product = productRepository.getProduct(it.productId());
-                return it.quantity() * product.getPrice();
-            }).mapToLong(i -> i).sum();
-
-        // 고객 잔액 차감
-        Customer customer = customerRepository.getCustomer(command.customerId());
-        customer.useBalance(totalOrderAmount);
 
         // 주문 내역 생성
-        Order order = new Order();
-        order.setCustomerId(command.customerId());
-        order.setCreatedAt(LocalDateTime.now());
+        Order order = Order.builder().customerId(customerId).orderItemList(new ArrayList<>()).build();
         Order order1 = orderRepository.save(order);
 
         // 주문 아이템 내역 저장
-        List<OrderItem> orderItemList = productOptionList.stream().map(it -> {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order1);
-            orderItem.setProductId(it.getProduct().getId());
-            orderItem.setProductOptionId(it.getId());
-            orderItem.setProductName(it.getProduct().getTitle());
-            orderItem.setColor(it.getColor());
-            orderItem.setSize(it.getSize());
-            orderItem.setPrice(it.getProduct().getPrice());
+        List<OrderItem> orderItemList = orderProductOptionList.stream().map(it -> {
 
-            command.newOrderItemList().forEach(item -> {
-                if(item.productOptionId() == it.getId()) {
-                    orderItem.setOrderQuantity(item.quantity());
-                }
-            });
+            OrderItem orderItem = OrderItem.builder()
+                    .order(order1)
+                    .productId(it.productId())
+                    .productOptionId(it.productOptionId())
+                    .productName(it.title())
+                    .color(it.color())
+                    .price(it.price())
+                    .orderQuantity(it.orderQuantity())
+                    .build();
 
             return orderItem;
         }).toList();
 
         List<OrderItem> orderItemList1 = orderItemRepository.saveAll(orderItemList);
 
-        order1.setOrderItemList(orderItemList1);
+        order1.builder().orderItemList(orderItemList1).build();
 
         return order1;
     }

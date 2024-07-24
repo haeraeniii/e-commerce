@@ -1,16 +1,15 @@
 package hhplus.e_commerce.domain.product.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Setter
 @Getter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     /**
@@ -26,13 +25,14 @@ public class Product {
     private String title;
 
     /**
-     * 상품 가격
-     */
-    private long price;
-
-    /**
      * 상품 옵션 리스트
      */
     @OneToMany(mappedBy = "product")
     private List<ProductOption> productOptionList;
+
+    @Builder
+    public Product(String title, List<ProductOption> productOptionList) {
+        this.title = title;
+        this.productOptionList = productOptionList;
+    }
 }

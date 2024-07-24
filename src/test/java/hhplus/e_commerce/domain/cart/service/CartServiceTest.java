@@ -22,20 +22,11 @@ class CartServiceTest {
     @DisplayName("해당 고객의 장바구니 리스트를 조회한다.")
     public void getCartListTest() {
         //given
-        Cart cart1 = new Cart();
-        cart1.setId(0);
-        cart1.setCustomerId(1);
-        cart1.setProductOptionId(100);
+        Cart cart1 = Cart.builder().customerId(1).productOptionId(1).build();
 
-        Cart cart2 = new Cart();
-        cart2.setId(1);
-        cart2.setCustomerId(1);
-        cart2.setProductOptionId(200);
+        Cart cart2 = Cart.builder().customerId(1).productOptionId(2).build();
 
-        Cart cart3 = new Cart();
-        cart3.setId(2);
-        cart3.setCustomerId(2);
-        cart3.setProductOptionId(300);
+        Cart cart3 = Cart.builder().customerId(1).productOptionId(3).build();
 
         List<Cart> cartList = new ArrayList<>();
         cartList.add(cart1);

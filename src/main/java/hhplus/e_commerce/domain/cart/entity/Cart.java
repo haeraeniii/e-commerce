@@ -1,12 +1,12 @@
 package hhplus.e_commerce.domain.cart.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cart {
 
     @Id @GeneratedValue
@@ -46,4 +46,15 @@ public class Cart {
      * 주문 수량
      */
     long orderQuantity;
+
+    @Builder
+    public Cart(long customerId, long productOptionId, String productName, String color, String size, long price, long orderQuantity) {
+        this.customerId = customerId;
+        this.productOptionId = productOptionId;
+        this.productName = productName;
+        this.color = color;
+        this.size = size;
+        this.price = price;
+        this.orderQuantity = orderQuantity;
+    }
 }

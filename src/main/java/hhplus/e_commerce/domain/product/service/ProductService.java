@@ -1,12 +1,18 @@
 package hhplus.e_commerce.domain.product.service;
 
+import hhplus.e_commerce.domain.order.service.command.OrderCommand;
 import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.entity.ProductOption;
-import hhplus.e_commerce.domain.product.service.dto.ProductCommand;
+import hhplus.e_commerce.domain.product.service.command.OrderProductCommand;
+import hhplus.e_commerce.domain.product.service.command.ProductCommand;
+import hhplus.e_commerce.domain.product.service.dto.OrderOptionAndQuantityDto;
+import hhplus.e_commerce.domain.product.service.dto.OrderProductDto;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
 import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
+import hhplus.e_commerce.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,26 +24,25 @@ public class ProductService {
     private final ProductOptionRepository productOptionRepository;
 
     //상품 등록
+    @Transactional
     public Product registerProduct (ProductCommand.Create command) {
-        Product product = new Product();
-        product.setTitle(command.title());
-        product.setPrice(command.price());
+        Product product = Product.builder().title(command.title()).build();
 
 
         Product product1 = productRepository.saveProduct(product);
 
         List<ProductOption> productOptionList = command.newProductOptionList().stream().map(option -> {
-            ProductOption option1 = new ProductOption();
-            option1.setProduct(product1);
-            option1.setColor(option.color());
-            option1.setSize(option.size());
-            option1.setStock(option.stock());
+            ProductOption option1 = ProductOption.builder()
+                    .product(product1)
+                    .color(option.color())
+                    .size(option.size())
+                    .stock(option.stock()).build();
 
             return option1;
         }).toList();
 
         List<ProductOption> productOptionList1 = productOptionRepository.saveAll(productOptionList);
-        product1.setProductOptionList(productOptionList1);
+        product1.builder().productOptionList(productOptionList1);
 
         return product1;
     }
@@ -57,5 +62,36 @@ public class ProductService {
      */
     public List<Product> findTopProduct(LocalDateTime startDate, LocalDateTime endDate) {
         return productRepository.findTopProduct(startDate, endDate);
+    }
+
+    /**
+     * 재고 차감, 전체 주문 금액 구하기
+     */
+    @Transactional
+    public OrderProductCommand.Create deductStockAndTotalAmount(List<OrderCommand.Create.NewOrderItem> newOrderItemList) {
+        List<ProductOption> productOptionList = new ArrayList<>();
+        List<OrderOptionAndQuantityDto> orderOptionAndQuantityDtos = new ArrayList<>();
+
+        long totalPrice = newOrderItemList
+            .stream().map(it -> {
+                ProductOption option = productOptionRepository.getById(it.productOptionId());
+
+                try {
+                    option.deductStock(it.quantity());
+                    productOptionList.add(option);
+                    orderOptionAndQuantityDtos.add(new OrderOptionAndQuantityDto(option, it.quantity()));
+
+                } catch (CustomException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return it.quantity() * option.getPrice();
+            }).mapToLong(i -> i).sum();
+
+        productOptionRepository.saveAll(productOptionList);
+
+        OrderProductDto orderProductDto = new OrderProductDto(totalPrice, orderOptionAndQuantityDtos);
+
+        return orderProductDto.toCommand();
     }
 }

@@ -19,12 +19,10 @@ class ProductControllerTest {
     @DisplayName("상품 저장 테스트")
     @Transactional
     @Rollback(false)
-    public void save() throws Exception {
+    public void save() {
         //given
-        Product product = new Product();
-        product.setId(0);
-        product.setTitle("블라우스");
-        product.setPrice(30000);
+        Product product = Product.builder()
+                .title("블라우스").build();
 
         productRepository.saveProduct(product);
 

@@ -2,12 +2,14 @@ package hhplus.e_commerce.domain.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +57,22 @@ public class OrderItem {
      * 주문 수량
      */
     private long orderQuantity;
+
+    /**
+     * 주문 날짜
+     */
+    private LocalDateTime orderedAt;
+
+    @Builder
+    public OrderItem(Order order, long productId, long productOptionId, String productName, String color, String size, long price, long orderQuantity) {
+        this.order = order;
+        this.productId = productId;
+        this.productOptionId = productOptionId;
+        this.productName = productName;
+        this.color = color;
+        this.size = size;
+        this.price = price;
+        this.orderQuantity = orderQuantity;
+        this.orderedAt = order.getCreatedAt();
+    }
 }

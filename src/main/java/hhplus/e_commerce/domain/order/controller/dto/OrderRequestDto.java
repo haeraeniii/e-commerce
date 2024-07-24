@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.order.controller.dto;
 
-import hhplus.e_commerce.domain.order.service.dto.OrderCommand;
+import hhplus.e_commerce.domain.order.service.command.OrderCommand;
 
 import java.util.List;
 

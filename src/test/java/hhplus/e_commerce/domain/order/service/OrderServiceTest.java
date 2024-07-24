@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.order.service;
 
-import hhplus.e_commerce.base.exception.CustomException;
+import hhplus.e_commerce.exception.CustomException;
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderItem;
 import hhplus.e_commerce.domain.order.service.repository.OrderRepository;
@@ -30,17 +30,11 @@ class OrderServiceTest {
 
 
     private void orderItem(OrderItem item, long productOptionId, String name, String color, String size, long price, long orderQuantity) {
-        item.setProductOptionId(productOptionId);
-        item.setProductName(name);
-        item.setColor(color);
-        item.setSize(size);
-        item.setPrice(price);
-        item.setOrderQuantity(orderQuantity);
+        item.builder().productOptionId(productOptionId).productName(name).color(color).size(size).price(price).build();
     }
 
     private void order(Order order, List<OrderItem> orderItemList, LocalDateTime time) {
-        order.setOrderItemList(orderItemList);
-        order.setCreatedAt(time);
+        order.builder().orderItemList(orderItemList).build();
     }
 
     private void dummyData(List<Order> orders) {
@@ -100,23 +94,23 @@ class OrderServiceTest {
         orderItemList.add(orderItem2);
         orderItemList.add(orderItem3);
 
-        ProductOption productOption1 = new ProductOption();
-        productOption1.setId(100);
-        productOption1.setColor("pink");
-        productOption1.setSize("M");
-        productOption1.setStock(10);
+        ProductOption productOption1 = ProductOption.builder()
+                .color("pink")
+                .size("M")
+                .stock(10)
+                .build();
 
-        ProductOption productOption2 = new ProductOption();
-        productOption1.setId(200);
-        productOption1.setColor("yellow");
-        productOption1.setSize("L");
-        productOption1.setStock(10);
+        ProductOption productOption2 = ProductOption.builder()
+                .color("pink")
+                .size("M")
+                .stock(10)
+                .build();
 
-        ProductOption productOption3 = new ProductOption();
-        productOption1.setId(300);
-        productOption1.setColor("black");
-        productOption1.setSize("S");
-        productOption1.setStock(10);
+        ProductOption productOption3 = ProductOption.builder()
+                .color("pink")
+                .size("M")
+                .stock(10)
+                .build();
 
         List<ProductOption> productOptionList = new ArrayList<>();
         productOptionList.add(productOption1);
@@ -128,7 +122,7 @@ class OrderServiceTest {
 
                 if(orderItem.getProductOptionId() == option.getId()) {
                     try {
-                        option.subtractStock(orderItem.getOrderQuantity());
+                        option.deductStock(orderItem.getOrderQuantity());
                     } catch (CustomException e) {
                         throw new RuntimeException(e);
                     }

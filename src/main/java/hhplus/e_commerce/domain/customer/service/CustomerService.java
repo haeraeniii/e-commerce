@@ -1,8 +1,8 @@
 package hhplus.e_commerce.domain.customer.service;
 
-import hhplus.e_commerce.base.exception.CustomException;
+import hhplus.e_commerce.exception.CustomException;
 import hhplus.e_commerce.domain.customer.entity.Customer;
-import hhplus.e_commerce.domain.customer.service.dto.CustomerCommand;
+import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,7 @@ public class CustomerService {
            throw new CustomException(CustomException.ExceptionType.HAS_SAME_USER);
         }
 
-        Customer customer = new Customer();
-        customer.setName(name);
+        Customer customer = new Customer(name, 0);
 
         return customerRepository.save(customer);
     }
@@ -39,8 +38,15 @@ public class CustomerService {
     public Customer charge(CustomerCommand.Create command) {
         Customer customer = customerRepository.getCustomer(command.customerId());
 
-        customer.setBalance(customer.getBalance() + command.balance());
+        customer.charge(customer.getBalance() + command.balance());
 
         return customer;
+    }
+
+    // 잔액 차감
+    @Transactional
+    public void useBalance(long customerId, long totalOrderAmount) throws CustomException {
+        Customer customer = customerRepository.getCustomer(customerId);
+        customer.useBalance(totalOrderAmount);
     }
 }

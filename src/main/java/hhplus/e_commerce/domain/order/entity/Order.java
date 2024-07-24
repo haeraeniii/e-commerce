@@ -1,18 +1,17 @@
 package hhplus.e_commerce.domain.order.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "`ORDER`")
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +34,11 @@ public class Order {
      * 날짜
      */
     private LocalDateTime createdAt;
+
+    @Builder
+    public Order(long customerId, List<OrderItem> orderItemList) {
+        this.customerId = customerId;
+        this.orderItemList = orderItemList;
+        this.createdAt = LocalDateTime.now();
+    }
 }

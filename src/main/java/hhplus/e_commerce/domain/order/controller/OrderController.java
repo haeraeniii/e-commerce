@@ -1,7 +1,6 @@
 package hhplus.e_commerce.domain.order.controller;
 
 import hhplus.e_commerce.base.data.ApiOneResult;
-import hhplus.e_commerce.base.exception.CustomException;
 import hhplus.e_commerce.domain.order.controller.dto.OrderRequestDto;
 import hhplus.e_commerce.domain.order.controller.dto.OrderResponseDto;
 import hhplus.e_commerce.domain.order.controller.dto.mapper.OrderMapper;
@@ -10,10 +9,8 @@ import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderSheet;
 import hhplus.e_commerce.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,15 +43,6 @@ public class OrderController {
         OrderSheet response = orderService.createOrderSheet(orderRequestDto.toOrderCreateCommand());
 
         return new ApiOneResult<>(true, "", orderSheetMapper.toDto(response));
-    }
-
-    //상품 주문
-    @PostMapping("/")
-    public ApiOneResult<OrderResponseDto> order (@RequestBody OrderRequestDto orderRequestDto) throws CustomException {
-
-        Order response = orderService.order(orderRequestDto.toOrderCreateCommand());
-
-        return new ApiOneResult<>(true, "주문되었습니다.", mapper.toDto(response));
     }
 
     // 주문 내역 보기

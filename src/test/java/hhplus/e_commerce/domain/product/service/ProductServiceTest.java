@@ -10,9 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -21,24 +19,12 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    @Mock
-    private ProductRepository productRepository;
-
-    @Mock
-    private ProductOptionRepository productOptionRepository;
-
     private void orderItem(OrderItem item, long productOptionId, String name, String color, String size, long price, long orderQuantity) {
-        item.setProductOptionId(productOptionId);
-        item.setProductName(name);
-        item.setColor(color);
-        item.setSize(size);
-        item.setPrice(price);
-        item.setOrderQuantity(orderQuantity);
+        item.builder().productOptionId(productOptionId).productName(name).color(color).size(size).price(price).orderQuantity(orderQuantity).build();
     }
 
-    private void order(Order order, List<OrderItem> orderItemList, LocalDateTime time) {
-        order.setOrderItemList(orderItemList);
-        order.setCreatedAt(time);
+    private void order(Order order, List<OrderItem> orderItemList) {
+        order.builder().orderItemList(orderItemList).build();
     }
 
     private void dummyData(List<Order> orders) {
@@ -103,10 +89,10 @@ class ProductServiceTest {
         orderItemList2.add(orderItem14);
 
         Order order1 = new Order();
-        order(order1, orderItemList, LocalDateTime.now().minusDays(2));
+        order(order1, orderItemList);
 
         Order order2 = new Order();
-        order(order2, orderItemList2, LocalDateTime.now().minusDays(3));
+        order(order2, orderItemList2);
 
         orders.add(order1);
         orders.add(order2);

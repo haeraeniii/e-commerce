@@ -1,7 +1,7 @@
 package hhplus.e_commerce.domain.cart.service;
 
 import hhplus.e_commerce.domain.cart.entity.Cart;
-import hhplus.e_commerce.domain.cart.service.dto.CartCommand;
+import hhplus.e_commerce.domain.cart.service.command.CartCommand;
 import hhplus.e_commerce.domain.cart.service.repository.CartRepository;
 import hhplus.e_commerce.domain.product.entity.ProductOption;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
@@ -23,14 +23,14 @@ public class CartService {
     public void addCart(CartCommand.Create command) {
         ProductOption productOption = productOptionRepository.getById(command.id());
 
-        Cart cart = new Cart();
-        cart.setCustomerId(command.customerId());
-        cart.setProductOptionId(productOption.getId());
-        cart.setProductName(productOption.getProduct().getTitle());
-        cart.setColor(productOption.getColor());
-        cart.setSize(productOption.getSize());
-        cart.setPrice(productOption.getProduct().getPrice());
-        cart.setOrderQuantity(command.orderQuantity());
+        Cart cart = Cart.builder()
+                .customerId(command.customerId())
+                .productOptionId(productOption.getId())
+                .productName(productOption.getProduct().getTitle())
+                .color(productOption.getColor())
+                .size(productOption.getSize())
+                .price(productOption.getPrice())
+                .orderQuantity(command.orderQuantity()).build();
 
         cartRepository.addCart(cart);
     }

@@ -1,17 +1,15 @@
 package hhplus.e_commerce.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import hhplus.e_commerce.base.exception.CustomException;
+import hhplus.e_commerce.exception.CustomException;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
-@Setter
 @Getter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductOption {
 
     /**
@@ -32,6 +30,11 @@ public class ProductOption {
     private String size;
 
     /**
+     * 상품 금액
+     */
+    private long price;
+
+    /**
      * 상품 재고
      */
     private long stock;
@@ -44,12 +47,19 @@ public class ProductOption {
     @JsonIgnore
     private Product product;
 
+    @Builder
+    public ProductOption(String color, String size, long price, long stock, Product product) {
+        this.color = color;
+        this.size = size;
+        this.price = price;
+        this.stock = stock;
+        this.product = product;
+    }
+
     /**
      * 재고 차감
-     * @param stock
-     * @throws CustomException
      */
-    public void subtractStock (long stock) throws CustomException {
+    public void deductStock (long stock) throws CustomException {
         if(this.stock <= 0) {
             throw new CustomException(CustomException.ExceptionType.STOCK_SHORTAGE);
         }
@@ -58,7 +68,6 @@ public class ProductOption {
 
     /**
      * 재고 복귀
-     * @param stock
      */
     public void addStock (long stock) {
         this.stock += stock;

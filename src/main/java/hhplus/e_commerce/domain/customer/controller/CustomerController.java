@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.customer.controller;
 
-import hhplus.e_commerce.base.exception.CustomException;
+import hhplus.e_commerce.exception.CustomException;
 import hhplus.e_commerce.domain.customer.controller.dto.CustomerRequestDto;
 import hhplus.e_commerce.domain.customer.controller.dto.CustomerResponseDto;
 import hhplus.e_commerce.domain.customer.controller.dto.mapper.CustomerMapper;
