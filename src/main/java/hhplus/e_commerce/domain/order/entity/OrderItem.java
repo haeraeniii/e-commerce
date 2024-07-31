@@ -21,6 +21,7 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     @JsonIgnore
+    @ToString.Exclude
     private Order order;
 
     /**
@@ -74,5 +75,6 @@ public class OrderItem {
         this.price = price;
         this.orderQuantity = orderQuantity;
         this.orderedAt = order.getCreatedAt();
+        order.getOrderItemList().add(this);
     }
 }

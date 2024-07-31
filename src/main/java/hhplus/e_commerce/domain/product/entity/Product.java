@@ -3,6 +3,7 @@ package hhplus.e_commerce.domain.product.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,12 +28,11 @@ public class Product {
     /**
      * 상품 옵션 리스트
      */
-    @OneToMany(mappedBy = "product")
-    private List<ProductOption> productOptionList;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductOption> productOptionList = new ArrayList<>();
 
-    @Builder
-    public Product(String title, List<ProductOption> productOptionList) {
+
+    public Product(String title) {
         this.title = title;
-        this.productOptionList = productOptionList;
     }
 }

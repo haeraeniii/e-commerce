@@ -37,11 +37,9 @@ class OrderServiceIntegrationTest {
     private ProductOptionRepository productOptionRepository;
 
     private void dummyData () {
-        Product product = Product.builder()
-                .title("팬츠").build();
+        Product product = new Product("팬츠");
 
-        Product product2 = Product.builder()
-                .title("셔츠").build();
+        Product product2 = new Product("셔츠");
 
         Product product1 = productRepository.saveProduct(product);
 

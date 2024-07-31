@@ -2,12 +2,9 @@ package hhplus.e_commerce.domain.product.service;
 
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderItem;
-import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
-import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,10 +18,6 @@ class ProductServiceTest {
 
     private void orderItem(OrderItem item, long productOptionId, String name, String color, String size, long price, long orderQuantity) {
         item.builder().productOptionId(productOptionId).productName(name).color(color).size(size).price(price).orderQuantity(orderQuantity).build();
-    }
-
-    private void order(Order order, List<OrderItem> orderItemList) {
-        order.builder().orderItemList(orderItemList).build();
     }
 
     private void dummyData(List<Order> orders) {
@@ -88,11 +81,9 @@ class ProductServiceTest {
         orderItemList2.add(orderItem13);
         orderItemList2.add(orderItem14);
 
-        Order order1 = new Order();
-        order(order1, orderItemList);
+        Order order1 = new Order(1);
 
-        Order order2 = new Order();
-        order(order2, orderItemList2);
+        Order order2 = new Order(1);
 
         orders.add(order1);
         orders.add(order2);

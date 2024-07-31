@@ -20,7 +20,7 @@ class CustomerServiceTest {
     @DisplayName("금액 충전 테스트")
     public void chargeTest() {
         //given
-        Customer customer = new Customer("정혜련", 0);
+        Customer customer = new Customer("정혜련");
 
         //when
         customer.charge(30000);
@@ -33,7 +33,7 @@ class CustomerServiceTest {
     @DisplayName("잔액 확인 테스트")
     public void checkBalanceTest() {
         //given
-        Customer customer = new Customer("정혜련", 3000);
+        Customer customer = new Customer("정혜련");
 
         //when
         when(customerService.checkBalance(0)).thenReturn(customer);

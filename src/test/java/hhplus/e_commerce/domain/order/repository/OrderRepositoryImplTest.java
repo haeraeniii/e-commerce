@@ -54,9 +54,9 @@ class OrderRepositoryImplTest {
 
 
 
-        Order order1 = Order.builder().orderItemList(orderItems).build();
+        Order order1 = new Order(1);
 
-        Order order2 = Order.builder().orderItemList(orderItems2).build();
+        Order order2 = new Order(1);
 
         List<Order> orders = new ArrayList<>();
         orders.add(order1);

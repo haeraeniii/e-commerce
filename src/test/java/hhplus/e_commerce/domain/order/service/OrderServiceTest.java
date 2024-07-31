@@ -29,23 +29,19 @@ class OrderServiceTest {
     private OrderRepository orderRepository;
 
 
-    private void orderItem(OrderItem item, long productOptionId, String name, String color, String size, long price, long orderQuantity) {
+    private void orderItem(OrderItem item, long productOptionId, String name, String color, String size, long price) {
         item.builder().productOptionId(productOptionId).productName(name).color(color).size(size).price(price).build();
-    }
-
-    private void order(Order order, List<OrderItem> orderItemList, LocalDateTime time) {
-        order.builder().orderItemList(orderItemList).build();
     }
 
     private void dummyData(List<Order> orders) {
         OrderItem orderItem1 = new OrderItem();
-        orderItem(orderItem1,  100, "블라우스", "pink", "M", 30000, 1);
+        orderItem(orderItem1,  100, "블라우스", "pink", "M", 30000);
 
         OrderItem orderItem2 = new OrderItem();
-        orderItem(orderItem2,  200, "셔츠", "yellow", "L", 35000, 1);
+        orderItem(orderItem2,  200, "셔츠", "yellow", "L", 35000);
 
         OrderItem orderItem3 = new OrderItem();
-        orderItem(orderItem3,  300, "팬츠", "black", "S", 40000, 1);
+        orderItem(orderItem3,  300, "팬츠", "black", "S", 40000);
 
         List<OrderItem> orderItemList = new ArrayList<>();
         orderItemList.add(orderItem1);
@@ -53,24 +49,22 @@ class OrderServiceTest {
         orderItemList.add(orderItem3);
 
         OrderItem orderItem4 = new OrderItem();
-        orderItem(orderItem4,  100, "블라우스", "pink", "M", 30000, 1);
+        orderItem(orderItem4,  100, "블라우스", "pink", "M", 30000);
 
         OrderItem orderItem5 = new OrderItem();
-        orderItem(orderItem5,  200, "셔츠", "yellow", "L", 35000, 1);
+        orderItem(orderItem5,  200, "셔츠", "yellow", "L", 35000);
 
         OrderItem orderItem6 = new OrderItem();
-        orderItem(orderItem6,  300, "팬츠", "black", "S", 40000, 1);
+        orderItem(orderItem6,  300, "팬츠", "black", "S", 40000);
 
         List<OrderItem> orderItemList2 = new ArrayList<>();
         orderItemList2.add(orderItem4);
         orderItemList2.add(orderItem5);
         orderItemList2.add(orderItem6);
 
-        Order order1 = new Order();
-        order(order1, orderItemList, LocalDateTime.now().minusDays(4));
+        Order order1 = new Order(1);
 
-        Order order2 = new Order();
-        order(order2, orderItemList2, LocalDateTime.now().minusDays(3));
+        Order order2 = new Order(1);
 
         orders.add(order1);
         orders.add(order2);
@@ -81,13 +75,13 @@ class OrderServiceTest {
     public void orderTest() {
         //given
         OrderItem orderItem1 = new OrderItem();
-        orderItem(orderItem1,  100, "블라우스", "pink", "M", 30000, 1);
+        orderItem(orderItem1,  100, "블라우스", "pink", "M", 30000);
 
         OrderItem orderItem2 = new OrderItem();
-        orderItem(orderItem2,  200, "셔츠", "yellow", "L", 35000, 1);
+        orderItem(orderItem2,  200, "셔츠", "yellow", "L", 35000);
 
         OrderItem orderItem3 = new OrderItem();
-        orderItem(orderItem3,  300, "팬츠", "black", "S", 40000,1);
+        orderItem(orderItem3,  300, "팬츠", "black", "S", 40000);
 
         List<OrderItem> orderItemList = new ArrayList<>();
         orderItemList.add(orderItem1);

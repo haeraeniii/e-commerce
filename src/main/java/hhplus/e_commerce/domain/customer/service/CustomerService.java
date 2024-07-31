@@ -5,9 +5,11 @@ import hhplus.e_commerce.domain.customer.entity.Customer;
 import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -23,7 +25,7 @@ public class CustomerService {
            throw new CustomException(CustomException.ExceptionType.HAS_SAME_USER);
         }
 
-        Customer customer = new Customer(name, 0);
+        Customer customer = new Customer(name);
 
         return customerRepository.save(customer);
     }
@@ -35,12 +37,12 @@ public class CustomerService {
 
     // 금액
     @Transactional
-    public Customer charge(CustomerCommand.Create command) {
-        Customer customer = customerRepository.getCustomer(command.customerId());
+    public Customer charge(CustomerCommand.Create command) throws CustomException {
+        Customer findCustomer = customerRepository.findById(command.customerId());
 
-        customer.charge(customer.getBalance() + command.balance());
+        findCustomer.charge(command.balance());
 
-        return customer;
+        return customerRepository.save(findCustomer);
     }
 
     // 잔액 차감
@@ -48,5 +50,7 @@ public class CustomerService {
     public void useBalance(long customerId, long totalOrderAmount) throws CustomException {
         Customer customer = customerRepository.getCustomer(customerId);
         customer.useBalance(totalOrderAmount);
+        customerRepository.save(customer);
+        log.info("차감 후 금액 : {}", customer.getBalance());
     }
 }

@@ -13,25 +13,25 @@ public class LoggerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // Controller 실행 전 , false 를 반환하면 request를 바로 종료
-        log.debug("===============================================");
-        log.debug("==================== BEGIN ====================");
-        log.debug("Request URI ===> " + request.getRequestURI());
-        log.debug("Request method ===> " + request.getMethod());
+        log.info("===============================================");
+        log.info("==================== BEGIN ====================");
+        log.info("Request URI ===> " + request.getRequestURI());
+        log.info("Request method ===> " + request.getMethod());
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         // Controller 실행 후 호출
-        log.debug("==================== END ======================");
-        log.debug("===============================================");
+        log.info("==================== END ======================");
+        log.info("===============================================");
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // Controller 응답 후 호출, 예외가 발생해도 실행
-        log.debug("============== afterCompletion ================");
-        log.debug("===============================================");
+        log.info("============== afterCompletion ================");
+        log.info("===============================================");
     }
 }

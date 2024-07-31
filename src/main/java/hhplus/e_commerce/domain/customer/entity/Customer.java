@@ -6,6 +6,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
@@ -24,10 +25,8 @@ public class Customer {
      */
     private long balance;
 
-    @Builder
-    public Customer(String name, long balance) {
+    public Customer(String name) {
         this.name = name;
-        this.balance = balance;
     }
 
     /**

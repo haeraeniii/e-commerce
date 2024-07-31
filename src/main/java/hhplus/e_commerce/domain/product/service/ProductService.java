@@ -11,38 +11,40 @@ import hhplus.e_commerce.domain.product.service.repository.ProductOptionReposito
 import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import hhplus.e_commerce.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
 
+
+
     //상품 등록
     @Transactional
     public Product registerProduct (ProductCommand.Create command) {
-        Product product = Product.builder().title(command.title()).build();
-
+        Product product = new Product(command.title());
 
         Product product1 = productRepository.saveProduct(product);
-
         List<ProductOption> productOptionList = command.newProductOptionList().stream().map(option -> {
             ProductOption option1 = ProductOption.builder()
                     .product(product1)
                     .color(option.color())
                     .size(option.size())
-                    .stock(option.stock()).build();
+                    .stock(option.stock())
+                    .price(option.price()).build();
 
             return option1;
         }).toList();
 
-        List<ProductOption> productOptionList1 = productOptionRepository.saveAll(productOptionList);
-        product1.builder().productOptionList(productOptionList1);
+        productOptionRepository.saveAll(productOptionList);
 
         return product1;
     }
@@ -74,8 +76,9 @@ public class ProductService {
 
         long totalPrice = newOrderItemList
             .stream().map(it -> {
+                log.info("productOption 조회 lock PESSIMISTIC_WRITE");
                 ProductOption option = productOptionRepository.getById(it.productOptionId());
-
+                log.info("productOption : {}", option.getStock());
                 try {
                     option.deductStock(it.quantity());
                     productOptionList.add(option);

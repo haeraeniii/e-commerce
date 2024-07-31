@@ -35,10 +35,8 @@ public class Order {
      */
     private LocalDateTime createdAt;
 
-    @Builder
-    public Order(long customerId, List<OrderItem> orderItemList) {
+    public Order(long customerId) {
         this.customerId = customerId;
-        this.orderItemList = orderItemList;
         this.createdAt = LocalDateTime.now();
     }
 }

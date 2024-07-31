@@ -21,8 +21,7 @@ class ProductControllerTest {
     @Rollback(false)
     public void save() {
         //given
-        Product product = Product.builder()
-                .title("블라우스").build();
+        Product product = new Product("블라우스");
 
         productRepository.saveProduct(product);
 

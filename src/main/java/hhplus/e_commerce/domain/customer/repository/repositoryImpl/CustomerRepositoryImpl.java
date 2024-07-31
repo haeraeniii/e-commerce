@@ -26,6 +26,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customerJpaRepository.findByName(name);
     }
 
+    public Customer findById(long customerId) {
+        return customerJpaRepository.findById(customerId).orElseThrow();
+    }
+
     @Override
     public Customer getBalance(long customerId) {
         return customerJpaRepository.getReferenceById(customerId);

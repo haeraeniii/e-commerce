@@ -45,6 +45,7 @@ public class ProductOption {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @JsonIgnore
+    @ToString.Exclude
     private Product product;
 
     @Builder
@@ -54,6 +55,7 @@ public class ProductOption {
         this.price = price;
         this.stock = stock;
         this.product = product;
+        product.getProductOptionList().add(this);
     }
 
     /**

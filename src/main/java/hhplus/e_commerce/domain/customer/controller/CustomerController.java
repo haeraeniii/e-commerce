@@ -51,7 +51,7 @@ public class CustomerController {
 
     @Transactional
     @PutMapping("/charge")
-    public ApiOneResult<CustomerResponseDto> charge (@RequestBody CustomerRequestDto customerRequestDto) {
+    public ApiOneResult<CustomerResponseDto> charge (@RequestBody CustomerRequestDto customerRequestDto) throws CustomException {
 
         Customer response = customerService.charge(customerRequestDto.toCustomerCommand());
 

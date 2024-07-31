@@ -14,6 +14,7 @@ import hhplus.e_commerce.domain.order.service.repository.OrderSheetRepository;
 import hhplus.e_commerce.domain.product.entity.ProductOption;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -78,10 +80,8 @@ public class OrderService {
      */
     @Transactional
     public Order order(long customerId, List<OrderProductCommand.Create.OrderProductOption> orderProductOptionList) throws CustomException {
-
-
         // 주문 내역 생성
-        Order order = Order.builder().customerId(customerId).orderItemList(new ArrayList<>()).build();
+        Order order = new Order(customerId);
         Order order1 = orderRepository.save(order);
 
         // 주문 아이템 내역 저장
@@ -93,6 +93,7 @@ public class OrderService {
                     .productOptionId(it.productOptionId())
                     .productName(it.title())
                     .color(it.color())
+                    .size(it.size())
                     .price(it.price())
                     .orderQuantity(it.orderQuantity())
                     .build();
@@ -100,9 +101,7 @@ public class OrderService {
             return orderItem;
         }).toList();
 
-        List<OrderItem> orderItemList1 = orderItemRepository.saveAll(orderItemList);
-
-        order1.builder().orderItemList(orderItemList1).build();
+        orderItemRepository.saveAll(orderItemList);
 
         return order1;
     }
