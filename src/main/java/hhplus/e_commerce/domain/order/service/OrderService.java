@@ -15,11 +15,11 @@ import hhplus.e_commerce.domain.product.entity.ProductOption;
 import hhplus.e_commerce.domain.product.service.repository.ProductOptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,6 +35,7 @@ public class OrderService {
     /**
      * 주문서 생성
      */
+    @CachePut(cacheNames = "orderSheet", key = "#result.id")
     public OrderSheet createOrderSheet (OrderCommand.Create command) {
         // 1. 상품 옵션 리스트 가져오기
         List<ProductOption> productOptionList =
@@ -79,6 +80,7 @@ public class OrderService {
      * 주문하기
      */
     @Transactional
+    @CachePut(cacheNames = "order", key = "#result.id")
     public Order order(long customerId, List<OrderProductCommand.Create.OrderProductOption> orderProductOptionList) throws CustomException {
         // 주문 내역 생성
         Order order = new Order(customerId);

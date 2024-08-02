@@ -12,6 +12,8 @@ import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
 import hhplus.e_commerce.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class ProductService {
 
     //상품 등록
     @Transactional
+    @CachePut(cacheNames = "product", key = "#result.id")
     public Product registerProduct (ProductCommand.Create command) {
         Product product = new Product(command.title());
 
@@ -55,6 +58,7 @@ public class ProductService {
     }
 
     // 상품 상세 조회
+    @Cacheable(cacheNames = "productDetail", key = "#id")
     public Product getProductDetail (long id) {
         return productRepository.getProduct(id);
     }

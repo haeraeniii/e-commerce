@@ -31,7 +31,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product getProduct(long id) {
-        return productJpaRepository.getReferenceById(id);
+        return productJpaRepository.findById(id).orElse(null);
     }
 
     @Override
