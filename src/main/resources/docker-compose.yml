@@ -6,3 +6,7 @@ services :
     hostname: test
     ports:
       - "6379:6379"
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    restart: unless-stopped

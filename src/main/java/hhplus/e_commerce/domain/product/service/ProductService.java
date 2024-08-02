@@ -66,6 +66,7 @@ public class ProductService {
     /**
      * 최근 3일 주문 내역 중 Top5 불러오기
      */
+    @Cacheable(cacheNames = "topProduct", key = "#id")
     public List<Product> findTopProduct(LocalDateTime startDate, LocalDateTime endDate) {
         return productRepository.findTopProduct(startDate, endDate);
     }
