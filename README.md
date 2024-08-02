@@ -142,6 +142,12 @@
     2. 주문 완료된 order & orderItem
     3. 결제 완료된 payment
 
+  - Cache의 Termination Type
+    - 상품정보 조회, 상품 디테일 정보 조회 : Eviction
+      상품 정보가 수정될 때 기존캐시를 날리는 방법
+    - 인기상품 조회 : Expiration
+      시간을 정해두고 주기적으로 삭제하는 방법
+
 ### 캐시 사용으로 인한 다양한 이슈
   - Look-Aside caching(값이 없을 때 원본 데이터를 DB와 같은 곳에서 읽어와서 채우는 것)으로 인한 race condition 발생 가능.
   - thundering herd 이슈 -> expire time보다 조금 더 빨리 재계산 해줘서 해당 값을 남아있게 한다. 또는 캐시 락킹 방법 사용 가능
