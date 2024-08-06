@@ -1,0 +1,29 @@
+spring:
+        datasource:
+                url: jdbc:h2:tcp://localhost/~/e-commerce
+                username: sa
+                password:
+                driver-class-name: org.h2.Driver
+
+        jpa:
+                hibernate:
+                        ddl-auto: create
+                properties:
+                        hibernate:
+#                                show_sql: true
+                                format_sql: true
+                defer-datasource-initialization: true
+                open-in-view: true
+        main:
+                allow-bean-definition-overriding: true
+        cache:
+                type: redis
+                redis:
+                        time-to-live: 3600
+                        cache-null-values: false
+                        host: localhost
+                        port: 6379
+logging:
+        level:
+                org.hibernate.SQL: debug
+#                org.hibernate.orm.jdbc.bind : trace
