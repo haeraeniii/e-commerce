@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.order.service;
 
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import hhplus.e_commerce.domain.customer.service.CustomerService;
 import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.order.service.command.OrderCommand;
@@ -25,9 +25,6 @@ import java.util.concurrent.Executors;
 class OrderServiceIntegrationTest {
 
     @Autowired
-    private OrderService orderService;
-
-    @Autowired
     private CustomerService customerService;
 
     @Autowired
@@ -36,43 +33,13 @@ class OrderServiceIntegrationTest {
     @Autowired
     private ProductOptionRepository productOptionRepository;
 
-    private void dummyData () {
-        Product product = new Product("팬츠");
-
-        Product product2 = new Product("셔츠");
-
-        Product product1 = productRepository.saveProduct(product);
-
-        ProductOption productOption1 = ProductOption.builder()
-                .product(product1)
-                .color("pink")
-                .size("M")
-                .price(10000)
-                .stock(10).build();
-
-        productOptionRepository.save(productOption1);
-
-        Product product2_1 = productRepository.saveProduct(product2);
-
-        ProductOption productOption2 =  ProductOption.builder()
-                .product(product2_1)
-                .color("pink")
-                .size("M")
-                .price(10000)
-                .stock(10).build();
-
-        productOptionRepository.save(productOption2);
-    }
-
     @Test
     @Transactional
     @Rollback(value = false)
     @DisplayName("주문 성공 테스트")
     public void orderTest() throws CustomException {
         //given
-        dummyData();
-
-        customerService.registerCustomer("허재");
+        customerService.registerCustomer("정혜련");
         CustomerCommand.Create CustomerCommand = new CustomerCommand.Create(1, 300000);
         customerService.charge(CustomerCommand);
 
@@ -95,7 +62,6 @@ class OrderServiceIntegrationTest {
     @DisplayName("주문 실패 테스트 - 재고 부족")
     public void orderFailTest_stock() throws CustomException {
         //given
-        dummyData();
         customerService.registerCustomer("허재");
         CustomerCommand.Create CustomerCommand = new CustomerCommand.Create(1, 300000);
         customerService.charge(CustomerCommand);
@@ -117,11 +83,6 @@ class OrderServiceIntegrationTest {
     @DisplayName("주문 실패 테스트 - 잔액 부족")
     public void orderFailTest_balance() throws CustomException {
         //given
-        dummyData();
-        customerService.registerCustomer("허재");
-        CustomerCommand.Create CustomerCommand = new CustomerCommand.Create(1, 10000);
-        customerService.charge(CustomerCommand);
-
         List<OrderCommand.Create.NewOrderItem> orderItems = new ArrayList<>();
         OrderCommand.Create.NewOrderItem orderItem1 = new OrderCommand.Create.NewOrderItem(1, 1, 1);
         OrderCommand.Create.NewOrderItem orderItem2 = new OrderCommand.Create.NewOrderItem(2, 2, 1);
@@ -141,34 +102,9 @@ class OrderServiceIntegrationTest {
     @DisplayName("동시성 테스트")
     public void orderTest_dup() throws InterruptedException, CustomException {
         //given
-        dummyData();
-        customerService.registerCustomer("허재");
-        CustomerCommand.Create CustomerCommand = new CustomerCommand.Create(1, 300000);
-        customerService.charge(CustomerCommand);
-
         List<OrderCommand.Create.NewOrderItem> orderItems1 = new ArrayList<>();
         OrderCommand.Create.NewOrderItem orderItem1 = new OrderCommand.Create.NewOrderItem(1, 1, 3);
         orderItems1.add(orderItem1);
-
-//        OrderCommand.Create command1 = new OrderCommand.Create(1, orderItems1);
-
-        customerService.registerCustomer("이석범");
-        CustomerCommand.Create CustomerCommand2 = new CustomerCommand.Create(2, 300000);
-        customerService.charge(CustomerCommand2);
-
-//        List<OrderCommand.Create.NewOrderItem> orderItems2 = new ArrayList<>();
-//        OrderCommand.Create.NewOrderItem orderItem2 = new OrderCommand.Create.NewOrderItem(1, 1, 3);
-//        orderItems2.add(orderItem2);
-//
-//        OrderCommand.Create command2 = new OrderCommand.Create(2, orderItems2);
-
-        customerService.registerCustomer("정혜련");
-        CustomerCommand.Create CustomerCommand3 = new CustomerCommand.Create(3, 300000);
-        customerService.charge(CustomerCommand3);
-
-//        List<OrderCommand.Create.NewOrderItem> orderItems3 = new ArrayList<>();
-//        OrderCommand.Create.NewOrderItem orderItem3 = new OrderCommand.Create.NewOrderItem(1, 1, 4);
-//        orderItems2.add(orderItem3);
 
 //        OrderCommand.Create command3 = new OrderCommand.Create(3, orderItems3);
 

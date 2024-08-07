@@ -1,7 +1,7 @@
 package hhplus.e_commerce.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +15,7 @@ public class ProductOption {
     /**
      * 상품 옵션 아이디
      */
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_option_id")
     private long id;
 

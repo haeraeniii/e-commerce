@@ -1,7 +1,7 @@
 package hhplus.e_commerce.domain.order.service;
 
 import hhplus.e_commerce.domain.product.service.command.OrderProductCommand;
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderItem;
 import hhplus.e_commerce.domain.order.entity.OrderItemSheet;
@@ -80,7 +80,7 @@ public class OrderService {
      * 주문하기
      */
     @Transactional
-    @CachePut(cacheNames = "order", key = "#result.id")
+//    @CachePut(cacheNames = "order", key = "#result.id")
     public Order order(long customerId, List<OrderProductCommand.Create.OrderProductOption> orderProductOptionList) throws CustomException {
         // 주문 내역 생성
         Order order = new Order(customerId);

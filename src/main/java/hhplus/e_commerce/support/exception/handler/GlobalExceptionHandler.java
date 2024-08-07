@@ -1,11 +1,11 @@
-package hhplus.e_commerce.exception.handler;
+package hhplus.e_commerce.support.exception.handler;
 
-import hhplus.e_commerce.base.data.ApiResult;
-import hhplus.e_commerce.exception.CustomException;
-import hhplus.e_commerce.exception.RestApiException;
-import hhplus.e_commerce.exception.errorcode.CommonErrorCode;
-import hhplus.e_commerce.exception.errorcode.ErrorCode;
-import hhplus.e_commerce.exception.response.ErrorResponse;
+import hhplus.e_commerce.support.base.data.ApiResult;
+import hhplus.e_commerce.support.exception.CustomException;
+import hhplus.e_commerce.support.exception.RestApiException;
+import hhplus.e_commerce.support.exception.errorcode.CommonErrorCode;
+import hhplus.e_commerce.support.exception.errorcode.ErrorCode;
+import hhplus.e_commerce.support.exception.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ErrorResponse makeErrorResponse(final ErrorCode errorCode) {
-        return hhplus.e_commerce.exception.response.ErrorResponse.builder()
+        return ErrorResponse.builder()
                 .code(errorCode.name())
                 .message(errorCode.getMessage())
                 .build();
@@ -79,8 +79,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(makeErrorResponse(errorCode, message));
     }
 
-    private hhplus.e_commerce.exception.response.ErrorResponse makeErrorResponse(final ErrorCode errorCode, final String message) {
-        return hhplus.e_commerce.exception.response.ErrorResponse.builder()
+    private ErrorResponse makeErrorResponse(final ErrorCode errorCode, final String message) {
+        return ErrorResponse.builder()
                 .code(errorCode.name())
                 .message(message)
                 .build();
@@ -91,14 +91,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(makeErrorResponse(e, errorCode));
     }
 
-    private hhplus.e_commerce.exception.response.ErrorResponse makeErrorResponse(final org.springframework.validation.BindException e, final ErrorCode errorCode) {
-        final List<hhplus.e_commerce.exception.response.ErrorResponse.ValidationError> validationErrorList = e.getBindingResult()
+    private ErrorResponse makeErrorResponse(final org.springframework.validation.BindException e, final ErrorCode errorCode) {
+        final List<ErrorResponse.ValidationError> validationErrorList = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(hhplus.e_commerce.exception.response.ErrorResponse.ValidationError::of)
+                .map(ErrorResponse.ValidationError::of)
                 .collect(Collectors.toList());
 
-        return hhplus.e_commerce.exception.response.ErrorResponse.builder()
+        return ErrorResponse.builder()
                 .code(errorCode.name())
                 .message(errorCode.getMessage())
                 .errors(validationErrorList)

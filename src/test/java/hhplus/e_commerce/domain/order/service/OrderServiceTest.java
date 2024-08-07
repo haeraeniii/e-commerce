@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.order.service;
 
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderItem;
 import hhplus.e_commerce.domain.order.service.repository.OrderRepository;
@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

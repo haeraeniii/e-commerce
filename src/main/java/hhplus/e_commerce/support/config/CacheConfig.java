@@ -1,4 +1,4 @@
-package hhplus.e_commerce.config;
+package hhplus.e_commerce.support.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;

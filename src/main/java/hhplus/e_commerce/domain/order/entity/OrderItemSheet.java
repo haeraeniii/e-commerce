@@ -26,16 +26,19 @@ public class OrderItemSheet {
     /**
      * 상품 아이디
      */
+    @Column(name = "product_id")
     private long productId;
 
     /**
      * 상품 옵션
      */
+    @Column(name = "product_option_id")
     private long productOptionId;
 
     /**
      * 상품명
      */
+    @Column(name = "product_name")
     private String productName;
 
     /**
@@ -56,5 +59,6 @@ public class OrderItemSheet {
     /**
      * 주문 수량
      */
+    @Column(name = "order_quantity")
     private long orderQuantity;
 }

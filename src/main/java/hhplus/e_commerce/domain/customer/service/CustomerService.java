@@ -1,6 +1,6 @@
 package hhplus.e_commerce.domain.customer.service;
 
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import hhplus.e_commerce.domain.customer.entity.Customer;
 import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
@@ -38,7 +38,7 @@ public class CustomerService {
     // 금액
     @Transactional
     public Customer charge(CustomerCommand.Create command) throws CustomException {
-        Customer findCustomer = customerRepository.findById(command.customerId());
+        Customer findCustomer = customerRepository.findByIdWithPessimisticWriteLock(command.customerId());
 
         findCustomer.charge(command.balance());
 

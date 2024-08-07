@@ -23,11 +23,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public Customer findByName(String name) {
-        return customerJpaRepository.findByName(name);
+        return customerJpaRepository.findByCustomerName(name);
     }
 
-    public Customer findById(long customerId) {
-        return customerJpaRepository.findById(customerId).orElseThrow();
+    public Customer findByIdWithPessimisticWriteLock(long customerId) {
+        return customerJpaRepository.findById(customerId);
     }
 
     @Override

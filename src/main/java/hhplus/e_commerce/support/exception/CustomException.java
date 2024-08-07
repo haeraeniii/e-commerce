@@ -1,4 +1,4 @@
-package hhplus.e_commerce.exception;
+package hhplus.e_commerce.support.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

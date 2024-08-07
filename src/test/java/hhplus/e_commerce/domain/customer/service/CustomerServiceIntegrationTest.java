@@ -3,13 +3,11 @@ package hhplus.e_commerce.domain.customer.service;
 import hhplus.e_commerce.domain.customer.entity.Customer;
 import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.customer.service.repository.CustomerRepository;
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -27,13 +25,13 @@ public class CustomerServiceIntegrationTest {
     private CustomerRepository customerRepository;
 
     @Test
-    @Transactional
-    @Rollback(false)
+//    @Transactional
+//    @Rollback(false)
     public void chargeSynchronicityTest() throws CustomException, InterruptedException {
         //given
         Customer customer = customerService.registerCustomer("김종협");
 
-        System.out.println("repository10 " + customerRepository.findById(1).getName());
+        System.out.println("repository10 " + customerRepository.findByIdWithPessimisticWriteLock(1).getCustomerName());
 
         // 동시성 이슈 테스트
         int threadCount = 3;
@@ -46,16 +44,21 @@ public class CustomerServiceIntegrationTest {
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failCount = new AtomicInteger();
 
+        log.info("Before for loop");
         //when
         for (int i = 0; i < threadCount; i++) {
+            int finalI = i;
             executorService.submit(() -> {
                 try {
 
+                        log.info("starting iteration:" + finalI);
                         customerService.charge(new CustomerCommand.Create(customer.getId(), 3000));
                         successCount.getAndIncrement();
+                        log.info("Successful iteration:" + finalI);
 
                 } catch (CustomException e) {
                     failCount.getAndIncrement();
+                    log.info("Exception in thread " + finalI + ": " + e.getMessage());
                     throw new RuntimeException(e);
                 } finally {
                     latch.countDown();
@@ -63,10 +66,10 @@ public class CustomerServiceIntegrationTest {
             });
         }
         latch.await();
-
-//        System.out.println("결과 : " + customer4);
-//        System.out.println("successCount" + successCount);
-//        System.out.println("failCount" + failCount);
+        executorService.shutdown();
+        log.info("결과 : " + customerRepository.findByIdWithPessimisticWriteLock(customer.getId()));
+        log.info("successCount" + successCount);
+        log.info("failCount" + failCount);
 
         //when
 //        CompletableFuture.allOf(

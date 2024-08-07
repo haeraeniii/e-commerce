@@ -1,4 +1,4 @@
-package hhplus.e_commerce.base.data;
+package hhplus.e_commerce.support.base.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

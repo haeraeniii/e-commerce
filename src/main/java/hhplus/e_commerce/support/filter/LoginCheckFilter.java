@@ -1,4 +1,4 @@
-package hhplus.e_commerce.filter;
+package hhplus.e_commerce.support.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

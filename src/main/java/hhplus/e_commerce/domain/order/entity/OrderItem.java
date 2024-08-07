@@ -27,16 +27,19 @@ public class OrderItem {
     /**
      * 상품 아이디
      */
+    @Column(name = "product_id")
     private long productId;
 
     /**
      * 상품 옵션 아이디
      */
+    @Column(name = "product_option_id")
     private long productOptionId;
 
     /**
      * 상품명
      */
+    @Column(name = "product_name")
     private String productName;
 
     /**
@@ -57,11 +60,13 @@ public class OrderItem {
     /**
      * 주문 수량
      */
+    @Column(name = "order_quantity")
     private long orderQuantity;
 
     /**
      * 주문 날짜
      */
+    @Column(name = "ordered_at")
     private LocalDateTime orderedAt;
 
     @Builder

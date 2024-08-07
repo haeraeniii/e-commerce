@@ -1,6 +1,6 @@
-package hhplus.e_commerce.exception;
+package hhplus.e_commerce.support.exception;
 
-import hhplus.e_commerce.exception.errorcode.ErrorCode;
+import hhplus.e_commerce.support.exception.errorcode.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

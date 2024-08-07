@@ -21,6 +21,7 @@ public class OrderSheet {
     /**
      * 고객
      */
+    @Column(name = "customer_id")
     private long customerId;
 
     /**
@@ -32,5 +33,6 @@ public class OrderSheet {
     /**
      * 상품 주문 시도 시간
      */
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 }

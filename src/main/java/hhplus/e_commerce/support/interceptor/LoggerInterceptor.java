@@ -1,4 +1,4 @@
-package hhplus.e_commerce.interceptor;
+package hhplus.e_commerce.support.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,8 +1,8 @@
-package hhplus.e_commerce.config;
+package hhplus.e_commerce.support.config;
 
-import hhplus.e_commerce.filter.LogFilter;
-import hhplus.e_commerce.filter.LoginCheckFilter;
-import hhplus.e_commerce.interceptor.LoggerInterceptor;
+import hhplus.e_commerce.support.filter.LogFilter;
+import hhplus.e_commerce.support.filter.LoginCheckFilter;
+import hhplus.e_commerce.support.interceptor.LoggerInterceptor;
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package hhplus.e_commerce.exception.response;
+package hhplus.e_commerce.support.exception.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

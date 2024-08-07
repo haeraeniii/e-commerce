@@ -1,4 +1,4 @@
-package hhplus.e_commerce.config;
+package hhplus.e_commerce.support.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

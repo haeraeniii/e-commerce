@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,18 +22,20 @@ public class Order {
     /**
      * 고객
      */
+    @Column(name = "customer_id")
     private long customerId;
 
     /**
      * 주문 디테일 리스트
      */
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItemList;
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
 
     /**
      * 날짜
      */
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     public Order(long customerId) {

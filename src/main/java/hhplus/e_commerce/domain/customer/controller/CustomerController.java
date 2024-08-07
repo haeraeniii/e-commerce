@@ -1,10 +1,10 @@
 package hhplus.e_commerce.domain.customer.controller;
 
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import hhplus.e_commerce.domain.customer.controller.dto.CustomerRequestDto;
 import hhplus.e_commerce.domain.customer.controller.dto.CustomerResponseDto;
 import hhplus.e_commerce.domain.customer.controller.dto.mapper.CustomerMapper;
-import hhplus.e_commerce.base.data.ApiOneResult;
+import hhplus.e_commerce.support.base.data.ApiOneResult;
 import hhplus.e_commerce.domain.customer.entity.Customer;
 import hhplus.e_commerce.domain.customer.service.CustomerService;
 import jakarta.servlet.http.HttpSession;

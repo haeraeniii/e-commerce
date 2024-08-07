@@ -2,18 +2,18 @@ package hhplus.e_commerce.domain.order.facade;
 
 import hhplus.e_commerce.domain.customer.entity.Customer;
 import hhplus.e_commerce.domain.customer.service.CustomerService;
+import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.order.service.command.OrderCommand;
 import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.service.ProductService;
 import hhplus.e_commerce.domain.product.service.command.ProductCommand;
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,25 +35,27 @@ class OrderProductFacadeTest {
     @Autowired
     private CustomerService customerService;
 
+    @BeforeEach
+    void init() throws CustomException {
+        Customer customer1 = customerService.registerCustomer("김종협");
+        Customer customer2 = customerService.registerCustomer("허재");
+        Customer customer3 = customerService.registerCustomer("정혜련");
+
+        for (int i = 0; i < 3; i++) {
+            CustomerCommand.Create customerCommand = new CustomerCommand.Create(i+1, 30000);
+            customerService.charge(customerCommand);
+        }
+    }
+
     @Test
     @DisplayName("주문 동시성 테스트")
-    @Transactional
-    @Rollback(false)
-    public void orderSynchronicityTest() throws CustomException, InterruptedException {
+    public void orderSynchronicityTest() throws InterruptedException {
         //given
         List<ProductCommand.Create.NewProductOption> optionList = getNewProductOptions();
         ProductCommand.Create product = new ProductCommand.Create("블라우스", optionList);
         Product product1 = productService.registerProduct(product);
 
         Product product2 = productService.getProductDetail(product1.getId());
-
-        Customer customer1 = customerService.registerCustomer("김종협");
-        Customer customer2 = customerService.registerCustomer("허재");
-        Customer customer3 = customerService.registerCustomer("정혜련");
-
-        customer1.charge(30000);
-        customer2.charge(30000);
-        customer3.charge(30000);
 
         List<OrderCommand.Create.NewOrderItem> orderItems = new ArrayList<>();
         OrderCommand.Create.NewOrderItem orderItem = new OrderCommand.Create.NewOrderItem(product2.getId(), product2.getProductOptionList().get(0).getId(),1);
@@ -83,32 +85,6 @@ class OrderProductFacadeTest {
         //when
         Long startTime = System.currentTimeMillis();
 
-//        CompletableFuture.allOf(
-//                CompletableFuture.runAsync(() -> {
-//                    try {
-//                        orderProductFacade.order(command1);
-//                    } catch (CustomException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }),
-//                CompletableFuture.runAsync(() -> {
-//                    try {
-//                        orderProductFacade.order(command2);
-//                    } catch (CustomException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }),
-//                CompletableFuture.runAsync(() -> {
-//                    try {
-//                        orderProductFacade.order(command3);
-//                    } catch (CustomException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                })
-//        ).join();
-//
-//         Thread.sleep(3000);
-
         CountDownLatch latch = new CountDownLatch(3);
         ExecutorService executor = Executors.newFixedThreadPool(3);
 
@@ -116,10 +92,12 @@ class OrderProductFacadeTest {
         IntStream.range(0, 3).forEach(i -> {
             executor.submit(() -> {
                 try {
-                    orderProductFacade.order(command1);
-
+                    log.info("start for loop");
+                    orderProductFacade.order(commandList.get(i));
+                    log.info("주문 상품 재고 체크 = " + productService.getProductDetail(1).getProductOptionList());
+                    log.info("Successful order");
                 } catch (Exception e) {
-                    log.info("Exception because: {}, {}", Thread.currentThread().getName(), e.getMessage());
+                    log.info("Exception because: {}, {}", Thread.currentThread().getName(), e.toString(), e);
                 } finally {
                     latch.countDown();
                 }

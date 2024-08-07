@@ -1,7 +1,7 @@
 package hhplus.e_commerce.domain.cart.controller;
 
-import hhplus.e_commerce.base.data.ApiOneResult;
-import hhplus.e_commerce.base.data.ApiResult;
+import hhplus.e_commerce.support.base.data.ApiOneResult;
+import hhplus.e_commerce.support.base.data.ApiResult;
 import hhplus.e_commerce.domain.cart.controller.dto.CartRequestDto;
 import hhplus.e_commerce.domain.cart.controller.dto.CartResponseDto;
 import hhplus.e_commerce.domain.cart.controller.dto.mapper.CartMapper;

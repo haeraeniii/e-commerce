@@ -6,7 +6,7 @@ import hhplus.e_commerce.domain.order.service.OrderService;
 import hhplus.e_commerce.domain.order.service.command.OrderCommand;
 import hhplus.e_commerce.domain.product.service.ProductService;
 import hhplus.e_commerce.domain.product.service.command.OrderProductCommand;
-import hhplus.e_commerce.exception.CustomException;
+import hhplus.e_commerce.support.exception.CustomException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
