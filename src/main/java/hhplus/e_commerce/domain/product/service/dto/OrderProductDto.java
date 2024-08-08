@@ -16,7 +16,6 @@ public record OrderProductDto(long totalAmount, List<OrderOptionAndQuantityDto> 
                       it.option().getColor(),
                       it.option().getSize(),
                       it.option().getPrice(),
-                      it.option().getStock(),
                       it.orderQuantity()
               )).toList()
         );

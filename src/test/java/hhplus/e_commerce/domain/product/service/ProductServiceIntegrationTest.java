@@ -1,12 +1,9 @@
 package hhplus.e_commerce.domain.product.service;
 
 import hhplus.e_commerce.domain.customer.service.CustomerService;
-import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.order.controller.dto.mapper.OrderMapper;
 import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.service.command.ProductCommand;
-import hhplus.e_commerce.domain.product.service.repository.ProductRepository;
-import hhplus.e_commerce.support.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +24,26 @@ public class ProductServiceIntegrationTest {
     private ProductService productService;
 
     @Autowired
-    private CustomerService customerService;
-
-    @Autowired
     OrderMapper orderMapper;
 
     @Test
     @Transactional
-    @Rollback(value = false)
     @DisplayName("인기상품 top5 쿼리 조회 테스트")
     public void topProductTest() {
-        List<Product> topProduct = productService.findTopProduct(LocalDateTime.now().minusDays(3), LocalDateTime.now());
+        Long startTime = System.currentTimeMillis();
+        List<Product> topProduct = productService.findTopProduct(LocalDateTime.now().minusDays(4), LocalDateTime.now().minusDays(1));
 
-        System.out.println("topProducts" + topProduct);
+        //when, then
+        log.info(topProduct.toString());
+        Long endTime = System.currentTimeMillis();
+        log.info("소요 시간: {}", (endTime - startTime) + "ms");
     }
 
     @Test
     @Transactional
     @Rollback(false)
     @DisplayName("cachedProductTest")
-    public void cachedProductTest() throws Exception {
+    public void cachedProductTest() {
         //given
         List<ProductCommand.Create.NewProductOption> newProductOptionList = new ArrayList<>();
         ProductCommand.Create.NewProductOption newProductOption = new ProductCommand.Create.NewProductOption("pink", "M", 10, 30000);

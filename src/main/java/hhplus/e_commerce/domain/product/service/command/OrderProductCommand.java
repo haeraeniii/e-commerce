@@ -14,7 +14,6 @@ public class OrderProductCommand {
                 String color,
                 String size,
                 long price,
-                long stock,
                 long orderQuantity
         ){}
     }

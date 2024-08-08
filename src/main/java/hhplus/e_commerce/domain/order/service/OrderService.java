@@ -109,9 +109,30 @@ public class OrderService {
     }
 
     /**
-     * 주문 내역 리스트 불러오기
+     * 주문 내역 불러오기
      */
     public List<Order> getOrderList() {
         return orderRepository.getOrderList();
+    }
+
+    /**
+     * 특정 고객 주문 내역 불러오기
+     */
+    public List<Order> getMyOrderList(long customerId) {
+        return orderRepository.getMyOrderList(customerId);
+    }
+
+    /**
+     * 특정 날짜에 주문 내역 불러오기
+     */
+    public List<Order> getOrderListWithDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.getOrderListWithDate(startDate, endDate);
+    }
+
+    /**
+     * 특정 날짜에 특정 고객 주문 내역 불러오기
+     */
+    public List<Order> getOrderListWithWhoAndDate(long customerId, LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.getOrderListWithWhoAndDate(customerId, startDate, endDate);
     }
 }

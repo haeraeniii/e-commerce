@@ -6,6 +6,7 @@ import hhplus.e_commerce.domain.order.service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -24,12 +25,22 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public Order getOrder(long id) {
-        return orderJpaRepository.getReferenceById(id);
+    public List<Order> getOrderList() {
+        return orderJpaRepository.findAll();
     }
 
     @Override
-    public List<Order> getOrderList() {
-        return orderJpaRepository.findAll();
+    public List<Order> getMyOrderList(long customerId) {
+        return orderJpaRepository.findAllByCustomerId(customerId);
+    }
+
+    @Override
+    public List<Order> getOrderListWithDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderJpaRepository.findAllByStartDateAndEndDate(startDate, endDate);
+    }
+
+    @Override
+    public List<Order> getOrderListWithWhoAndDate(long customerId, LocalDateTime startDate, LocalDateTime endDate) {
+        return orderJpaRepository.findAllByCustomerIdAndStartDateAndEndDate(customerId, startDate, endDate);
     }
 }
