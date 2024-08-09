@@ -7,3 +7,4 @@
 ### [04. Swagger](https://github.com/user-attachments/files/16506939/04_Swagger.md)
 ### [05. Caching](https://github.com/user-attachments/files/16507012/05_Caching.md)
 ### [06. Index](https://github.com/user-attachments/files/16507102/06_Index.md)
+### [07_Event_Driven.md](https://github.com/user-attachments/files/16556502/07_Event_Driven.md)

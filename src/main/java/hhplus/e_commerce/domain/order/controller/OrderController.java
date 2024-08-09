@@ -1,5 +1,6 @@
 package hhplus.e_commerce.domain.order.controller;
 
+import hhplus.e_commerce.domain.order.facade.OrderProductFacade;
 import hhplus.e_commerce.support.base.data.ApiOneResult;
 import hhplus.e_commerce.domain.order.controller.dto.OrderRequestDto;
 import hhplus.e_commerce.domain.order.controller.dto.OrderResponseDto;
@@ -8,6 +9,8 @@ import hhplus.e_commerce.domain.order.controller.dto.mapper.OrderSheetMapper;
 import hhplus.e_commerce.domain.order.entity.Order;
 import hhplus.e_commerce.domain.order.entity.OrderSheet;
 import hhplus.e_commerce.domain.order.service.OrderService;
+import hhplus.e_commerce.support.base.data.ApiResult;
+import hhplus.e_commerce.support.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +23,8 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+
+    private final OrderProductFacade orderProductFacade;
 
     private final OrderMapper mapper;
 
@@ -43,6 +48,13 @@ public class OrderController {
         OrderSheet response = orderService.createOrderSheet(orderRequestDto.toOrderCreateCommand());
 
         return new ApiOneResult<>(true, "", orderSheetMapper.toDto(response));
+    }
+
+    @PostMapping("/order")
+    ApiResult order(@RequestBody OrderRequestDto orderRequestDto) throws CustomException {
+        orderProductFacade.order(orderRequestDto.toOrderCreateCommand());
+
+        return new ApiResult(true, "주문되었습니다.");
     }
 
     // 주문 내역 보기

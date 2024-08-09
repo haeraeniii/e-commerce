@@ -1,15 +1,10 @@
 package hhplus.e_commerce.domain.order.facade;
 
-import hhplus.e_commerce.domain.customer.entity.Customer;
-import hhplus.e_commerce.domain.customer.service.CustomerService;
-import hhplus.e_commerce.domain.customer.service.command.CustomerCommand;
 import hhplus.e_commerce.domain.order.service.command.OrderCommand;
 import hhplus.e_commerce.domain.product.entity.Product;
 import hhplus.e_commerce.domain.product.service.ProductService;
 import hhplus.e_commerce.domain.product.service.command.ProductCommand;
-import hhplus.e_commerce.support.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +26,6 @@ class OrderProductFacadeTest {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private CustomerService customerService;
-
-    @BeforeEach
-    void init() throws CustomException {
-        Customer customer1 = customerService.registerCustomer("김종협");
-        Customer customer2 = customerService.registerCustomer("허재");
-        Customer customer3 = customerService.registerCustomer("정혜련");
-
-        for (int i = 0; i < 3; i++) {
-            CustomerCommand.Create customerCommand = new CustomerCommand.Create(i+1, 30000);
-            customerService.charge(customerCommand);
-        }
-    }
 
     @Test
     @DisplayName("주문 동시성 테스트")
@@ -122,5 +102,21 @@ class OrderProductFacadeTest {
         optionList.add(option2);
         optionList.add(option3);
         return optionList;
+    }
+
+    @Test
+    public void orderEventListenerTest() throws Exception {
+        //given
+        OrderCommand.Create.NewOrderItem newOrderItem = new OrderCommand.Create.NewOrderItem(1,1,2);
+        List<OrderCommand.Create.NewOrderItem> newOrderItemList = new ArrayList<>();
+        newOrderItemList.add(newOrderItem);
+
+        OrderCommand.Create command = new OrderCommand.Create(1, newOrderItemList);
+
+        //when
+        orderProductFacade.order(command);
+
+        //then
+        log.info("주문 완료");
     }
 }

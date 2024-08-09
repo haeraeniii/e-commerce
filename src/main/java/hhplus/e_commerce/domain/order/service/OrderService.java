@@ -35,7 +35,7 @@ public class OrderService {
     /**
      * 주문서 생성
      */
-    @CachePut(cacheNames = "orderSheet", key = "#result.id")
+//    @CachePut(cacheNames = "orderSheet", key = "#result.id")
     public OrderSheet createOrderSheet (OrderCommand.Create command) {
         // 1. 상품 옵션 리스트 가져오기
         List<ProductOption> productOptionList =
@@ -77,20 +77,28 @@ public class OrderService {
     }
 
     /**
+     * 주문 내역 생성
+     */
+    @Transactional
+    public Order order(OrderCommand.Create command) {
+        Order order = new Order(command.customerId());
+        return orderRepository.save(order);
+    }
+
+    /**
      * 주문하기
      */
     @Transactional
 //    @CachePut(cacheNames = "order", key = "#result.id")
-    public Order order(long customerId, List<OrderProductCommand.Create.OrderProductOption> orderProductOptionList) throws CustomException {
-        // 주문 내역 생성
-        Order order = new Order(customerId);
-        Order order1 = orderRepository.save(order);
+    public Order order(long orderId, List<OrderProductCommand.Create.OrderProductOption> orderProductOptionList) throws CustomException {
+        // 주문 내역 가져오기
+        Order order = orderRepository.getOrder(orderId);
 
         // 주문 아이템 내역 저장
         List<OrderItem> orderItemList = orderProductOptionList.stream().map(it -> {
 
             OrderItem orderItem = OrderItem.builder()
-                    .order(order1)
+                    .order(order)
                     .productId(it.productId())
                     .productOptionId(it.productOptionId())
                     .productName(it.title())
@@ -105,7 +113,7 @@ public class OrderService {
 
         orderItemRepository.saveAll(orderItemList);
 
-        return order1;
+        return order;
     }
 
     /**

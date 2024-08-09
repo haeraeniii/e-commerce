@@ -11,6 +11,8 @@ public interface OrderRepository {
 
     List<Order> saveAll(List<Order> order);
 
+    Order getOrder(long orderId);
+
     List<Order> getOrderList();
 
     List<Order> getMyOrderList(long customerId);

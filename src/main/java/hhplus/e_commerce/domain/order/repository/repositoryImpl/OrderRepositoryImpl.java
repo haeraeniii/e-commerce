@@ -25,6 +25,11 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    public Order getOrder(long orderId) {
+        return orderJpaRepository.findById(orderId).orElse(null);
+    }
+
+    @Override
     public List<Order> getOrderList() {
         return orderJpaRepository.findAll();
     }
