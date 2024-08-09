@@ -1,0 +1,94 @@
+-- CREATE TABLE IF NOT EXISTS customer
+-- (
+--     customer_id INTEGER NOT NULL AUTO_INCREMENT,
+--     customer_name VARCHAR(100) NOT NULL,
+--     balance INTEGER NOT NULL,
+--     PRIMARY KEY(customer_id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS cart
+-- (
+--     id INTEGER NOT NULL AUTO_INCREMENT,
+--     customer_id INTEGER NOT NULL,
+--     order_quantity INTEGER NOT NULL,
+--     price INTEGER NOT NULL,
+--     product_option_id INTEGER NOT NULL,
+--     color VARCHAR(100) NOT NULL,
+--     product_name VARCHAR(100) NOT NULL,
+--     `size` VARCHAR(100) NOT NULL,
+--     PRIMARY KEY(id),
+--     FOREIGN KEY(customer_id) REFERENCES customer (customer_id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS product
+-- (
+--     product_id INTEGER NOT NULL AUTO_INCREMENT,
+--     title VARCHAR(100) NOT NULL,
+--     PRIMARY KEY(product_id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS productOption
+-- (
+--     product_option_id INTEGER NOT NULL AUTO_INCREMENT,
+--     product_id INTEGER NOT NULL,
+--     price INTEGER NOT NULL,
+--     stock INTEGER NOT NULL,
+--     color VARCHAR(100) NOT NULL,
+--     `size` VARCHAR(100) NOT NULL,
+--     PRIMARY KEY(product_option_id),
+--     FOREIGN KEY(product_id) REFERENCES product (product_id)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS `order`
+-- (
+--     order_id INTEGER NOT NULL AUTO_INCREMENT,
+--     customer_id INTEGER NOT NULL,
+--     created_at DATETIME NOT NULL,
+--     PRIMARY KEY(order_id),
+--     FOREIGN KEY(customer_id) REFERENCES customer (customer_id)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS orderItem
+-- (
+--     id INTEGER NOT NULL AUTO_INCREMENT,
+--     order_id INTEGER NOT NULL,
+--     product_id INTEGER NOT NULL,
+--     product_option_id INTEGER NOT NULL,
+--     product_name VARCHAR(100) NOT NULL,
+--     color VARCHAR(100) NOT NULL,
+--     `size` VARCHAR(100) NOT NULL,
+--     price INTEGER NOT NULL,
+--     order_quantity INTEGER NOT NULL,
+--     ordered_at DATETIME NOT NULL,
+--     PRIMARY KEY(id),
+--     FOREIGN KEY(order_id) REFERENCES `order` (order_id),
+--     FOREIGN KEY(product_id) REFERENCES product (product_id),
+--     FOREIGN KEY(product_option_id) REFERENCES productOption (product_option_id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS orderSheet
+-- (
+--     order_sheet_id INTEGER NOT NULL AUTO_INCREMENT,
+--     customer_id INTEGER NOT NULL,
+--     created_at DATETIME NOT NULL,
+--     PRIMARY KEY(order_sheet_id),
+--     FOREIGN KEY(customer_id) REFERENCES customer (customer_id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS orderItemSheet
+-- (
+--     id INTEGER NOT NULL AUTO_INCREMENT,
+--     order_sheet_id INTEGER NOT NULL,
+--     product_id INTEGER NOT NULL,
+--     product_option_id INTEGER NOT NULL,
+--     product_name VARCHAR(100) NOT NULL,
+--     color VARCHAR(100) NOT NULL,
+--     `size` VARCHAR(100) NOT NULL,
+--     price INTEGER NOT NULL,
+--     order_quantity INTEGER NOT NULL,
+--     ordered_at DATETIME NOT NULL,
+--     PRIMARY KEY(id),
+--     FOREIGN KEY(order_sheet_id) REFERENCES orderSheet (order_sheet_id),
+--     FOREIGN KEY(product_id) REFERENCES product (product_id),
+--     FOREIGN KEY(product_option_id) REFERENCES productOption (product_option_id)
+-- );
