@@ -50,7 +50,7 @@ public class OrderController {
         return new ApiOneResult<>(true, "", orderSheetMapper.toDto(response));
     }
 
-    @PostMapping("/order")
+    @PostMapping("/")
     ApiResult order(@RequestBody OrderRequestDto orderRequestDto) throws CustomException {
         orderProductFacade.order(orderRequestDto.toOrderCreateCommand());
 

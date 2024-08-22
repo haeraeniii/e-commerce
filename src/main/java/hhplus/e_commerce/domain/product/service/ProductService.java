@@ -13,6 +13,7 @@ import hhplus.e_commerce.support.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +59,7 @@ public class ProductService {
 
     // 상품 상세 조회
     @Transactional(readOnly = true)
-//    @Cacheable(cacheNames = "productDetail", key = "#id")
+    @Cacheable(cacheNames = "productDetail", key = "#id")
     public Product getProductDetail (long id) {
         Product product = productRepository.getProduct(id);
 

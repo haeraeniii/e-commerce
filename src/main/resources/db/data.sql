@@ -1,32 +1,32 @@
-INSERT INTO customer(customer_name, balance) values ('정혜련', 5000000);
-INSERT INTO customer(customer_name, balance) values ('정필진', 500000);
-INSERT INTO customer(customer_name, balance) values ('정재근', 300000);
-INSERT INTO customer(customer_name, balance) values ('김종애', 300000);
+INSERT INTO customer(customer_name, balance) values ('정혜련', 5000000000);
+INSERT INTO customer(customer_name, balance) values ('정필진', 5000000000);
+INSERT INTO customer(customer_name, balance) values ('정재근', 3000000000);
+INSERT INTO customer(customer_name, balance) values ('김종애', 3000000000);
 
 INSERT INTO product (title) values ('블라우스');
-INSERT INTO productOption (product_id, color, size, price, stock) values (1, 'pink', 'S', 30000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (1, 'pink', 'M', 30000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (1, 'pink', 'L', 30000, 10);
+INSERT INTO productOption (product_id, color, size, price, stock) values (1, 'pink', 'S', 30000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (1, 'pink', 'M', 30000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (1, 'pink', 'L', 30000, 10000);
 
 INSERT INTO product (title) values ('청바지');
-INSERT INTO productOption (product_id, color, size, price, stock) values (2, 'black', 'S', 20000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (2, 'black', 'M', 20000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (2, 'black', 'L', 20000, 10);
+INSERT INTO productOption (product_id, color, size, price, stock) values (2, 'black', 'S', 20000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (2, 'black', 'M', 20000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (2, 'black', 'L', 20000, 10000);
 
 INSERT INTO product (title) values ('부츠');
-INSERT INTO productOption (product_id, color, size, price, stock) values (3, 'gray', 'S', 40000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (3, 'gray', 'M', 40000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (3, 'gray', 'L', 40000, 10);
+INSERT INTO productOption (product_id, color, size, price, stock) values (3, 'gray', 'S', 40000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (3, 'gray', 'M', 40000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (3, 'gray', 'L', 40000, 10000);
 
 INSERT INTO product (title) values ('스커트');
-INSERT INTO productOption (product_id, color, size, price, stock) values (4, 'yellow', 'S', 100, 30);
-INSERT INTO productOption (product_id, color, size, price, stock) values (4, 'yellow', 'M', 100, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (4, 'yellow', 'L', 100, 10);
+INSERT INTO productOption (product_id, color, size, price, stock) values (4, 'yellow', 'S', 100, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (4, 'yellow', 'M', 100, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (4, 'yellow', 'L', 100, 10000);
 
 INSERT INTO product (title) values ('코트');
-INSERT INTO productOption (product_id, color, size, price, stock) values (5, 'green', 'S', 1000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (5, 'green', 'M', 1000, 10);
-INSERT INTO productOption (product_id, color, size, price, stock) values (5, 'green', 'L', 1000, 10);
+INSERT INTO productOption (product_id, color, size, price, stock) values (5, 'green', 'S', 1000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (5, 'green', 'M', 1000, 10000);
+INSERT INTO productOption (product_id, color, size, price, stock) values (5, 'green', 'L', 1000, 10000);
 
 INSERT INTO `order` (customer_id, created_at) values (1, '2024-08-05 12:10:17');
 INSERT INTO orderItem (order_id, product_id, product_option_id, product_name, color, size, price, order_quantity, ordered_at) values (1, 1, 2, '블라우스', 'pink', 'M', 30000, 1, '2024-08-05 12:10:17');
