@@ -59,7 +59,7 @@ public class ProductService {
 
     // 상품 상세 조회
     @Transactional(readOnly = true)
-    @Cacheable(cacheNames = "productDetail", key = "#id")
+//    @Cacheable(cacheNames = "productDetail", key = "#id")
     public Product getProductDetail (long id) {
         Product product = productRepository.getProduct(id);
 
@@ -85,9 +85,7 @@ public class ProductService {
 
         long totalPrice = newOrderItemList
             .stream().map(it -> {
-                log.info("productOption 조회 lock PESSIMISTIC_WRITE");
                 ProductOption option = productOptionRepository.getById(it.productOptionId());
-                log.info("productOption : {}", option.getStock());
                 try {
                     option.deductStock(it.quantity());
                     productOptionList.add(option);

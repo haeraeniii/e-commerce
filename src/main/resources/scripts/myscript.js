@@ -5,10 +5,10 @@ import {randomIntBetween} from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 export let options = {
     scenarios: {
         order_scenario: {
-            vus: 10, // 가상 사용자
+            vus: 100, // 가상 사용자
             exec: 'order_scenario',
             executor: 'per-vu-iterations', // 각각의 가상 사용자들이 정확한 반복 횟수만큼 실행
-            iterations: 100,
+            iterations: 1000,
         }
     }
 };
@@ -48,7 +48,7 @@ function order() {
         }
 
     let orderRes = http.post(
-        'http://localhost:8080/order/',
+        'http://localhost:8080/api/order/',
         JSON.stringify(orderRequest),
         {
             headers: {'Content-Type': 'application/json'},
